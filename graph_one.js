@@ -1,5 +1,5 @@
 
-
+document.addEventListener('DOMContentLoaded', function(e) {
 
 // set the dimensions and margins of the graph
 var margin = {top: 50, right: 150, bottom: 110, left: 50},
@@ -409,3 +409,5 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
     .style("font-size", 15)
 
 })
+
+});
