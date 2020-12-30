@@ -22,7 +22,7 @@
 
 <!-- Load d3.js -->
 <script src="https://d3js.org/d3.v4.js"></script>
-
+<script src="https://d3js.org/d3-time.v2.min.js"></script>
 
 <!-- Create a div where the graph will take place -->
 <div id="my_dataviz"></div>
@@ -34,9 +34,9 @@
 <script>
 
 // set the dimensions and margins of the graph
-var margin = {top: 50, right: 100, bottom: 30, left: 50},
-    width = 800 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+var margin = {top: 50, right: 150, bottom: 110, left: 50},
+    width = 1200 - margin.left - margin.right,
+    height = 600 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
 var svg = d3.select("#my_dataviz")
@@ -51,7 +51,8 @@ var svg = d3.select("#my_dataviz")
 d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/master/output/data.csv", function(data) {
   console.log(data);
     // List of groups (here I have one group per column)
-    var allGroup = ["Viral_Pot", "Value_Infectious","Free_Viral"]
+    var allGroup = ["Viral_Pot", "Value_Infectious"];
+    var secondGroup = ["Free_Viral"];
 
     // Reformat the data: we need an array of arrays of {x, y} tuples
     var dataReady = allGroup.map( function(grpName) { // .map allows to do something for each element of the list
@@ -78,15 +79,15 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
     var x = d3.scaleTime()
   .rangeRound([0, width]);
 
-  var x_axis = d3.axisBottom(x)
-  .ticks(5);
+  var x_axis = d3.axisBottom(x);
+
   var xFormat = "%d-%b-%Y";;
   var parseTime = d3.timeParse("%Y-%m-%d");
   x.domain(d3.extent(data, function(d) { return parseTime(d.Datum); }));
   svg.append("g")
     .attr("transform", "translate(0," + height + ")")
   //  .call(d3.axisBottom(x));
-  .call(d3.axisBottom(x).tickFormat(d3.timeFormat(xFormat)));
+  .call(d3.axisBottom(x).tickFormat(d3.timeFormat(xFormat)).ticks(d3.timeFormat.month, 2)) ;
 
 
 
@@ -100,10 +101,21 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
       var y_axis = d3.axisBottom(y);
 
 
+      var z = d3.scaleLinear()
+        .domain( [0,1])
+        .range([ height, 0 ]);
+      svg.append("g")
+        .call(d3.axisRight(z));
+
+
+        var z_axis = d3.axisBottom(z);
+
+
+
 
       	//y.domain([0,
         //          d3.max(data, function(d) {
-        //            return d3.max([d.a, d.b, d.c, d.d]);
+        //            return d3.max([d.]);
         //          })]);
 
 
@@ -118,10 +130,14 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
         .attr("class", function(d){ return d.name })
         .attr("d", function(d){ return line(d.values) } )
         .attr("stroke", function(d){ return myColor(d.name) })
-        .style("stroke-width", 4)
+        .style("stroke-width", 2)
         .style("fill", "none")
+        //.append("svg:title")
+        //  .text(function(d,i) { return "Datum " + parseTime(i.time) + " Wert: " + i.value; });
+
 
     // Add the points
+    /*
     svg
       // First we need to enter in a group
       .selectAll("myDots")
@@ -135,10 +151,13 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
       .data(function(d){ return d.values })
       .enter()
       .append("circle")
-        .attr("cx", function(d) { return x(d.time) } )
+        .attr("cx", function(d) { return x(parseTime(d.time)) } )
         .attr("cy", function(d) { return y(d.value) } )
         .attr("r", 3)
         .attr("stroke", "white")
+        //.append("svg:title")
+        //  .text(function(d, i) { return "Datum " + d.time + " Wert: " + d.value; });
+        */
 
     // Add a label at the end of each line
     svg
@@ -149,7 +168,7 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
         .append("text")
           .attr("class", function(d){ return d.name })
           .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; }) // keep only the last value of each time series
-          .attr("transform", function(d) { return "translate(" + x(d.value.time) + "," + y(d.value.value) + ")"; }) // Put the text at the position of the last point
+          .attr("transform", function(d) { return "translate(" + x(parseTime(d.value.time)) + "," + y(d.value.value) + ")"; }) // Put the text at the position of the last point
           .attr("x", 12) // shift the text a bit more right
           .text(function(d) { return d.name; })
           .style("fill", function(d){ return myColor(d.name) })
@@ -161,9 +180,15 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
       .data(dataReady)
       .enter()
         .append('g')
+        //.append("text")
+        //  .attr('x', 30)
+        //  .attr('y', height+50)
+        //  .text('Scenario Base5')
+        //  .style("fill", "black")
+        //  .style("font-size", 15)
         .append("text")
-          .attr('x', function(d,i){ return 30 + i*60})
-          .attr('y', 30)
+          .attr('y', function(d,i){ return height+50 + (i+1)*20})
+          .attr('x', 30)
           .text(function(d) { return d.name; })
           .style("fill", function(d){ return myColor(d.name) })
           .style("font-size", 15)
@@ -175,6 +200,15 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
 
 
         })
+
+    svg
+    .selectAll("LegendTitle").data(dataReady).enter().append('g').append("text")
+    .attr('x', 30)
+    .attr('y', height+50)
+    .text('Scenario Base5')
+    .style("fill", "black")
+    .style("font-size", 15)
+
 })
 
 
