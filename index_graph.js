@@ -1,6 +1,6 @@
 
 
-<!-- Load d3.js -->
+
 <link href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" rel="stylesheet"/>
 <script src="https://d3js.org/d3.v4.js"></script>
 <script src="https://d3js.org/d3-time.v2.min.js"></script>
@@ -74,10 +74,7 @@
     })(0);
   </script>
 
-<!-- Create a div where the graph will take place -->
 
-
-<!-- Color Scale -->
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
 
