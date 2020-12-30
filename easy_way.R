@@ -6,7 +6,7 @@ nrow(chbase5)
 #when date has no values it is additional data afterwards that should be deleted
 chbase5<-chbase5[!is.na(chbase5[,1]),]
 #at the last 5 lines there are now till some NAs
-chbase5<-chbase5[!apply(is.na(chbase5),1,any),]
+chbase5<-chbase5[!apply(is.na(chbase5$Viral_Pot),1,any),]
 nrow(chbase5)
 names(chbase5)[1]<-"Datum"
 names(chbase5)[22]<-"Viral_Pot"
