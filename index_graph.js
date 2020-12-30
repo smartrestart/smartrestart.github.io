@@ -1,9 +1,8 @@
 
 
 
-<link href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" rel="stylesheet"/>
-<script src="https://d3js.org/d3.v4.js"></script>
-<script src="https://d3js.org/d3-time.v2.min.js"></script>
+
+
 <script>
     function NMoveAvg(context, N) {
       this._context = context;
