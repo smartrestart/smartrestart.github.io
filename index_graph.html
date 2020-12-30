@@ -119,7 +119,6 @@ var svg = d3.select("#my_dataviz")
 
 //Read the data
 d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/master/output/data_scenario_chbase5.csv", function(data) {
-  console.log(data);
     // List of groups (here I have one group per column)
     var allGroup = ["Viral_Pot", "Free_Viral"];
     var secondGroup = ["Value_Infectious"];
@@ -133,8 +132,21 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
         })
       };
     });
-    console.log(dataReady);
-    var dataReady2 = secondGroup.map( function(grpName) { // .map allows to do something for each element of the list
+    d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/master/output/data_scenario_chbaseplus5.csv", function(data) {
+        // List of groups (here I have one group per column)
+        var allGroupPlus = ["Viral_Pot_Plus", "Free_Viral_Plus"];
+        var secondGroupPlus = ["Value_Infectious_Plus"];
+
+        // Reformat the data: we need an array of arrays of {x, y} tuples
+        var dataReadyPlus = allGroupPlus.map( function(grpName) { // .map allows to do something for each element of the list
+          return {
+            name: grpName,
+            values: data.map(function(d) {
+              return {time: d.Datum, value: +d[grpName]};
+            })
+          };
+        });
+    var dataReady2Plus = secondGroupPlus.map( function(grpName) { // .map allows to do something for each element of the list
       return {
         name: grpName,
         values: data.map(function(d) {
@@ -142,9 +154,7 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
         })
       };
     });
-    console.log(dataReady2);
-    // I strongly advise to have a look to dataReady with
-    // console.log(dataReady)
+
 
     // A color scale: one color for each group
     var myColor = d3.scaleOrdinal()
@@ -191,10 +201,6 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
 
 
 
-//console.log(d3.max(allGroup, function(d) { return d.gdp; } ));
-//console.log(d3.max(data, function(d) { return +d.Viral_Pot; }));
-//console.log(d3.max(dataReady[0], function(d){d.values.value}));
-//console.log(d3.max(dataReady[1].values).value);
 
       	y.domain([0,
                   d3.max([d3.max(data, function(d) { return +d.Viral_Pot; }),d3.max(data, function(d) { return +d.Free_Viral; })])]);
@@ -251,7 +257,7 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
           .append("path")
             .attr("class", function(d){ return d.name })
             .attr("d", function(d){ return line2(d.values) } )
-            .attr("stroke", "steelblue")
+            .attr("stroke", function(d){ return myColor(d.name) })
             .style("stroke-width", 2)
             .style("fill", "none")
 
@@ -271,7 +277,66 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
             .style("stroke-width", 2)
             .style("fill", "none")
 
+//Jetzt für Plus-Szeario
+            var linePlus = d3.line()
+              .x(function(d) { return x(parseTime(d.time)); })
+              .y(function(d) { return y(+d.value) })
+            svg.selectAll("myLinesPlus")
+              .data(dataReadyPlus)
+              .enter()
+              .append("path")
+                .attr("class", function(d){ return d.name })
+                .attr("d", function(d){ return linePlus(d.values) } )
+                .attr("stroke", function(d){ return myColor(d.name) })
+                .style("stroke-width", 2)
+                .style("fill", "none")
+                //.append("svg:title")
+                //  .text(function(d,i) { return "Datum " + parseTime(i.time) + " Wert: " + i.value; });
 
+                var movLinePlus = d3.line()
+            .x(function(d) { return x(parseTime(d.time)); })
+            .y(function(d) { return y(+d.value) })
+            //.interpolate(movingAvg(7))
+            svg.selectAll("movMyLinesPlus")
+              .data(dataReadyPlus)
+              .enter()
+              .append("path")
+                .attr("d", linePlus.curve(curveNMoveAge.N(7)))
+                .attr("class", function(d){ return d.name })
+                .attr("d", function(d){ return linePlus(d.values) } )
+                .attr("stroke", function(d){ return myColor(d.name) })
+                .style("stroke-dasharray", ("3, 3"))
+                .style("stroke-width", 2)
+                .style("fill", "none")
+
+                var line2Plus = d3.line()
+                  .x(function(d) { return x(parseTime(d.time)); })
+                  .y(function(d) { return z(+d.value) })
+                svg.selectAll("myLines2Plus")
+                  .data(dataReady2Plus)
+                  .enter()
+                  .append("path")
+                    .attr("class", function(d){ return d.name })
+                    .attr("d", function(d){ return line2Plus(d.values) } )
+                    .attr("stroke", function(d){ return myColor(d.name) })
+                    .style("stroke-width", 2)
+                    .style("fill", "none")
+
+                var movLine2Plus = d3.line()
+                    .x(function(d) { return x(parseTime(d.time)); })
+                    .y(function(d) { return z(+d.value) })
+                    //.interpolate(movingAvg(7))
+                    svg.selectAll("movMyLines2Plus")
+                    .data(dataReady2Plus)
+                    .enter()
+                    .append("path")
+                    .attr("d", line2Plus.curve(curveNMoveAge.N(7)))
+                    .attr("class", function(d){ return d.name })
+                    .attr("d", function(d){ return line2Plus(d.values) } )
+                    .attr("stroke", function(d){ return myColor(d.name) })
+                    .style("stroke-dasharray", ("3, 3"))
+                    .style("stroke-width", 2)
+                    .style("fill", "none")
 
     // Add the points
     /*
@@ -333,7 +398,7 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
         .append("text")
           .attr('y', function(d,i){ return height+50 + (i+1)*20})
           .attr('x', 30)
-          .text(function(d) { return "\uf14a "+ d.name + " (Linke Y-Axe)"; })
+          .text(function(d) { return "\uf14a "+ d.name + " (Linke y-Achse)"; })
           .attr("class", "fa")
           .attr("class","fas fa-adjust")
           //.text("\uf005")
@@ -346,7 +411,7 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
           currentOpacity = d3.selectAll("." + d.name).style("opacity")
           // Change the opacity: from 0 to 1 or from 1 to 0
           d3.selectAll("." + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
-          d3.select(this).text(currentOpacity == 1 ? "\uf0c8 "+ d.name + " (Linke Y-Axe)":"\uf14a "+ d.name + " (Linke Y-Axe)");
+          d3.select(this).text(currentOpacity == 1 ? "\uf0c8 "+ d.name + " (Linke y-Achse)":"\uf14a "+ d.name + " (Linke y-Achse)");
         })
     svg
       .selectAll("myLegend2")
@@ -356,7 +421,7 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
         .append("text")
           .attr('y', height+50+3*20)
           .attr('x', 30)
-          .text(function(d) { return "\uf14a"+ d.name + " (Rechte Y-Axe)"; })
+          .text(function(d) { return "\uf14a"+ d.name + " (Rechte y-Achse)"; })
           .attr("class", "fa")
           .attr("class","fas fa-adjust")
           .style("fill", function(d){ return myColor(d.name) })
@@ -366,7 +431,7 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
           currentOpacity = d3.selectAll("." + d.name).style("opacity")
           // Change the opacity: from 0 to 1 or from 1 to 0
           d3.selectAll("." + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
-          d3.select(this).text(currentOpacity == 1 ? "\uf0c8 "+ d.name + " (Rechte Y-Axe)":"\uf14a "+ d.name + " (Rechte Y-Axe)");
+          d3.select(this).text(currentOpacity == 1 ? "\uf0c8 "+ d.name + " (Rechte y-Achse)":"\uf14a "+ d.name + " (Rechte y-Achse)");
         })
 
     svg
