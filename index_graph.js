@@ -1,24 +1,4 @@
-<!-- Code from d3-graph-gallery.com -->
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta name="description" content="Webpage description goes here" />
-  <meta charset="utf-8">
-  <title>Change_me</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="author" content="">
-  <link rel="stylesheet" href="css/style.css">
-  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-</head>
-
-<body>
-
-<div class="container">
-
-</div>
-</body>
-</html>
 
 <!-- Load d3.js -->
 <link href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" rel="stylesheet"/>
@@ -95,7 +75,7 @@
   </script>
 
 <!-- Create a div where the graph will take place -->
-<div id="my_dataviz"></div>
+
 
 <!-- Color Scale -->
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
@@ -118,7 +98,7 @@ var svg = d3.select("#my_dataviz")
           "translate(" + margin.left + "," + margin.top + ")");
 
 //Read the data
-d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/master/output/data_scenario_chbase5.csv", function(data) {
+d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/master/output/data.csv", function(data) {
     // List of groups (here I have one group per column)
     var allGroup = ["Viral_Pot", "Free_Viral"];
     var secondGroup = ["Value_Infectious"];
@@ -132,7 +112,16 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
         })
       };
     });
-    d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/master/output/data_scenario_chbaseplus5.csv", function(data) {
+
+    var dataReady2 = secondGroup.map( function(grpName) { // .map allows to do something for each element of the list
+      return {
+        name: grpName,
+        values: data.map(function(d) {
+          return {time: d.Datum, value: +d[grpName]};
+        })
+      };
+    });
+
         // List of groups (here I have one group per column)
         var allGroupPlus = ["Viral_Pot_Plus", "Free_Viral_Plus"];
         var secondGroupPlus = ["Value_Infectious_Plus"];
@@ -290,6 +279,7 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
                 .attr("stroke", function(d){ return myColor(d.name) })
                 .style("stroke-width", 2)
                 .style("fill", "none")
+                .style('opacity', 0.0)
                 //.append("svg:title")
                 //  .text(function(d,i) { return "Datum " + parseTime(i.time) + " Wert: " + i.value; });
 
@@ -308,10 +298,13 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
                 .style("stroke-dasharray", ("3, 3"))
                 .style("stroke-width", 2)
                 .style("fill", "none")
+                .style('opacity', 0.0)
 
                 var line2Plus = d3.line()
                   .x(function(d) { return x(parseTime(d.time)); })
                   .y(function(d) { return z(+d.value) })
+
+
                 svg.selectAll("myLines2Plus")
                   .data(dataReady2Plus)
                   .enter()
@@ -321,6 +314,8 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
                     .attr("stroke", function(d){ return myColor(d.name) })
                     .style("stroke-width", 2)
                     .style("fill", "none")
+                    .style('opacity', 0.0)
+
 
                 var movLine2Plus = d3.line()
                     .x(function(d) { return x(parseTime(d.time)); })
@@ -337,6 +332,7 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
                     .style("stroke-dasharray", ("3, 3"))
                     .style("stroke-width", 2)
                     .style("fill", "none")
+                    .style('opacity', 0.0)
 
     // Add the points
     /*
@@ -434,11 +430,63 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
           d3.select(this).text(currentOpacity == 1 ? "\uf0c8 "+ d.name + " (Rechte y-Achse)":"\uf14a "+ d.name + " (Rechte y-Achse)");
         })
 
+        svg
+          .selectAll("myLegendPlus")
+          .data(dataReadyPlus)
+          .enter()
+            .append('g')
+            .append("text")
+              .attr('y', function(d,i){ return height+50 + (i+1)*20})
+              .attr('x', 600)
+              .text(function(d) { return "\uf0c8 "+ d.name + " (Linke y-Achse)"; })
+              .attr("class", "fa")
+              .attr("class","fas fa-adjust")
+              //.text("\uf005")
+              //.text(function (d) { return '\uf2b9' })
+              .style("fill", function(d){ return myColor(d.name) })
+              .style("font-size", 15)
+
+            .on("click", function(d){
+              // is the element currently visible ?
+              currentOpacity = d3.selectAll("." + d.name).style("opacity")
+              // Change the opacity: from 0 to 1 or from 1 to 0
+              d3.selectAll("." + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+              d3.select(this).text(currentOpacity == 1 ? "\uf0c8 "+ d.name + " (Linke y-Achse)":"\uf14a "+ d.name + " (Linke y-Achse)");
+            })
+        svg
+          .selectAll("myLegend2Plus")
+          .data(dataReady2Plus)
+          .enter()
+            .append('g')
+            .append("text")
+              .attr('y', height+50+3*20)
+              .attr('x', 600)
+              .text(function(d) { return "\uf0c8"+ d.name + " (Rechte y-Achse)"; })
+              .attr("class", "fa")
+              .attr("class","fas fa-adjust")
+              .style("fill", function(d){ return myColor(d.name) })
+              .style("font-size", 15)
+            .on("click", function(d){
+              // is the element currently visible ?
+              currentOpacity = d3.selectAll("." + d.name).style("opacity")
+              // Change the opacity: from 0 to 1 or from 1 to 0
+              d3.selectAll("." + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+              d3.select(this).text(currentOpacity == 1 ? "\uf0c8 "+ d.name + " (Rechte y-Achse)":"\uf14a "+ d.name + " (Rechte y-Achse)");
+            })
+
     svg
     .selectAll("LegendTitle").data(dataReady).enter().append('g').append("text")
     .attr('x', 30)
     .attr('y', height+50)
     .text('Scenario Base5')
+    .style("fill", "black")
+    .style("font-size", 15)
+
+    svg
+    .selectAll("LegendTitlePlus").data(dataReadyPlus).enter().append('g').append("text")
+    .attr('x', 600)
+    .attr('y', height+50)
+    .text('Scenario BasePlus5')
     .style("fill", "black")
     .style("font-size", 15)
 
