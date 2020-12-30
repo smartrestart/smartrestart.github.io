@@ -41,4 +41,5 @@ chbase5<-chbase5[!is.na(chbase5$Viral_Pot),]
 #reduce cols
 chbase5<-chbase5[,c("Datum","Viral_Pot","Value_Infectious","Free_Viral")]
 #cbind()
-write.csv(chbase5,"output/data.csv",row.names = FALSE)
+write.csv(chbase5,"output/data_scenario_chbase5.csv",row.names = FALSE)
+write.csv(chbaseplus5,"output/data_scenario_chbaseplus5.csv",row.names = FALSE)

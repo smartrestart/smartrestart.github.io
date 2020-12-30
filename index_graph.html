@@ -21,8 +21,78 @@
 </html>
 
 <!-- Load d3.js -->
+<link href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" rel="stylesheet"/>
 <script src="https://d3js.org/d3.v4.js"></script>
 <script src="https://d3js.org/d3-time.v2.min.js"></script>
+<script>
+    function NMoveAvg(context, N) {
+      this._context = context;
+      this._points = {
+        x: [],
+        y: []
+      };
+      this._N = N;
+    }
+
+    NMoveAvg.prototype = {
+      areaStart: function() {
+        this._line = 0;
+      },
+      areaEnd: function() {
+        this._line = NaN;
+      },
+      lineStart: function() {
+        this._point = 0;
+      },
+      lineEnd: function() {
+        if (this._line || (this._line !== 0 && this._point === 1)) this._context.closePath();
+        this._line = 1 - this._line;
+      },
+      point: function(x, y) {
+        x = +x, y = +y;
+
+        this._points.x.push(x);
+        this._points.y.push(y);
+
+        if (this._points.x.length < this._N) return;
+
+        var aX = this._points.x.reduce(function(a, b) {
+            return a + b;
+          }, 0) / this._N,
+          aY = this._points.y.reduce(function(a, b) {
+            return a + b;
+          }, 0) / this._N;
+
+        this._points.x.shift();
+        this._points.y.shift();
+
+        switch (this._point) {
+          case 0:
+            this._point = 1;
+            this._line ? this._context.lineTo(aX, aY) : this._context.moveTo(aX, aY);
+            break;
+          case 1:
+            this._point = 2; // proceed
+          default:
+            this._context.lineTo(aX, aY);
+            break;
+        }
+      }
+    };
+
+    var curveNMoveAge = (function custom(N) {
+
+      function nMoveAge(context) {
+        return new NMoveAvg(context, N);
+      }
+
+      nMoveAge.N = function(N) {
+        return custom(+N);
+      };
+
+      return nMoveAge;
+    })(0);
+  </script>
 
 <!-- Create a div where the graph will take place -->
 <div id="my_dataviz"></div>
@@ -48,11 +118,11 @@ var svg = d3.select("#my_dataviz")
           "translate(" + margin.left + "," + margin.top + ")");
 
 //Read the data
-d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/master/output/data.csv", function(data) {
+d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/master/output/data_scenario_chbase5.csv", function(data) {
   console.log(data);
     // List of groups (here I have one group per column)
-    var allGroup = ["Viral_Pot", "Value_Infectious"];
-    var secondGroup = ["Free_Viral"];
+    var allGroup = ["Viral_Pot", "Free_Viral"];
+    var secondGroup = ["Value_Infectious"];
 
     // Reformat the data: we need an array of arrays of {x, y} tuples
     var dataReady = allGroup.map( function(grpName) { // .map allows to do something for each element of the list
@@ -64,6 +134,15 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
       };
     });
     console.log(dataReady);
+    var dataReady2 = secondGroup.map( function(grpName) { // .map allows to do something for each element of the list
+      return {
+        name: grpName,
+        values: data.map(function(d) {
+          return {time: d.Datum, value: +d[grpName]};
+        })
+      };
+    });
+    console.log(dataReady2);
     // I strongly advise to have a look to dataReady with
     // console.log(dataReady)
 
@@ -93,18 +172,18 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
 
     // Add Y axis
     var y = d3.scaleLinear()
-      .domain( [0,20000])
+      //.domain( [0,20000])
       .range([ height, 0 ]);
-    svg.append("g")
-      .call(d3.axisLeft(y));
 
-      var y_axis = d3.axisBottom(y);
+
+
 
 
       var z = d3.scaleLinear()
         .domain( [0,1])
         .range([ height, 0 ]);
       svg.append("g")
+      .attr("transform", "translate( " + width + ", 0 )")
         .call(d3.axisRight(z));
 
 
@@ -112,11 +191,23 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
 
 
 
+//console.log(d3.max(allGroup, function(d) { return d.gdp; } ));
+//console.log(d3.max(data, function(d) { return +d.Viral_Pot; }));
+//console.log(d3.max(dataReady[0], function(d){d.values.value}));
+//console.log(d3.max(dataReady[1].values).value);
 
-      	//y.domain([0,
-        //          d3.max(data, function(d) {
-        //            return d3.max([d.]);
-        //          })]);
+      	y.domain([0,
+                  d3.max([d3.max(data, function(d) { return +d.Viral_Pot; }),d3.max(data, function(d) { return +d.Free_Viral; })])]);
+                    //allGroup.map( function(d) {
+                    //console.log(d3.max(d.value.values));
+                    //return d3.max(d.value.values);
+                  //}))]);
+                  svg.append("g")
+                    .call(d3.axisLeft(y));
+
+                  var y_axis = d3.axisBottom(y);
+
+
 
 
     // Add the lines
@@ -134,6 +225,52 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
         .style("fill", "none")
         //.append("svg:title")
         //  .text(function(d,i) { return "Datum " + parseTime(i.time) + " Wert: " + i.value; });
+
+        var movLine = d3.line()
+    .x(function(d) { return x(parseTime(d.time)); })
+    .y(function(d) { return y(+d.value) })
+    //.interpolate(movingAvg(7))
+    svg.selectAll("movMyLines")
+      .data(dataReady)
+      .enter()
+      .append("path")
+        .attr("d", line.curve(curveNMoveAge.N(7)))
+        .attr("class", function(d){ return d.name })
+        .attr("d", function(d){ return line(d.values) } )
+        .attr("stroke", function(d){ return myColor(d.name) })
+        .style("stroke-dasharray", ("3, 3"))
+        .style("stroke-width", 2)
+        .style("fill", "none")
+
+        var line2 = d3.line()
+          .x(function(d) { return x(parseTime(d.time)); })
+          .y(function(d) { return z(+d.value) })
+        svg.selectAll("myLines2")
+          .data(dataReady2)
+          .enter()
+          .append("path")
+            .attr("class", function(d){ return d.name })
+            .attr("d", function(d){ return line2(d.values) } )
+            .attr("stroke", "steelblue")
+            .style("stroke-width", 2)
+            .style("fill", "none")
+
+        var movLine2 = d3.line()
+            .x(function(d) { return x(parseTime(d.time)); })
+            .y(function(d) { return z(+d.value) })
+            //.interpolate(movingAvg(7))
+            svg.selectAll("movMyLines2")
+            .data(dataReady2)
+            .enter()
+            .append("path")
+            .attr("d", line2.curve(curveNMoveAge.N(7)))
+            .attr("class", function(d){ return d.name })
+            .attr("d", function(d){ return line2(d.values) } )
+            .attr("stroke", function(d){ return myColor(d.name) })
+            .style("stroke-dasharray", ("3, 3"))
+            .style("stroke-width", 2)
+            .style("fill", "none")
+
 
 
     // Add the points
@@ -173,6 +310,19 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
           .text(function(d) { return d.name; })
           .style("fill", function(d){ return myColor(d.name) })
           .style("font-size", 15)
+      svg
+        .selectAll("myLabels2")
+        .data(dataReady2)
+        .enter()
+          .append('g')
+          .append("text")
+            .attr("class", function(d){ return d.name })
+            .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; }) // keep only the last value of each time series
+            .attr("transform", function(d) { return "translate(" + x(parseTime(d.value.time)) + "," + z(d.value.value) + ")"; }) // Put the text at the position of the last point
+            .attr("x", 12) // shift the text a bit more right
+            .text(function(d) { return d.name; })
+            .style("fill", function(d){ return myColor(d.name) })
+            .style("font-size", 15)
 
     // Add a legend (interactive)
     svg
@@ -180,16 +330,35 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
       .data(dataReady)
       .enter()
         .append('g')
-        //.append("text")
-        //  .attr('x', 30)
-        //  .attr('y', height+50)
-        //  .text('Scenario Base5')
-        //  .style("fill", "black")
-        //  .style("font-size", 15)
         .append("text")
           .attr('y', function(d,i){ return height+50 + (i+1)*20})
           .attr('x', 30)
-          .text(function(d) { return d.name; })
+          .text(function(d) { return "\uf14a "+ d.name + " (Linke Y-Axe)"; })
+          .attr("class", "fa")
+          .attr("class","fas fa-adjust")
+          //.text("\uf005")
+          //.text(function (d) { return '\uf2b9' })
+          .style("fill", function(d){ return myColor(d.name) })
+          .style("font-size", 15)
+
+        .on("click", function(d){
+          // is the element currently visible ?
+          currentOpacity = d3.selectAll("." + d.name).style("opacity")
+          // Change the opacity: from 0 to 1 or from 1 to 0
+          d3.selectAll("." + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+          d3.select(this).text(currentOpacity == 1 ? "\uf0c8 "+ d.name + " (Linke Y-Axe)":"\uf14a "+ d.name + " (Linke Y-Axe)");
+        })
+    svg
+      .selectAll("myLegend2")
+      .data(dataReady2)
+      .enter()
+        .append('g')
+        .append("text")
+          .attr('y', height+50+3*20)
+          .attr('x', 30)
+          .text(function(d) { return "\uf14a"+ d.name + " (Rechte Y-Axe)"; })
+          .attr("class", "fa")
+          .attr("class","fas fa-adjust")
           .style("fill", function(d){ return myColor(d.name) })
           .style("font-size", 15)
         .on("click", function(d){
@@ -197,8 +366,7 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
           currentOpacity = d3.selectAll("." + d.name).style("opacity")
           // Change the opacity: from 0 to 1 or from 1 to 0
           d3.selectAll("." + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
-
-
+          d3.select(this).text(currentOpacity == 1 ? "\uf0c8 "+ d.name + " (Rechte Y-Axe)":"\uf14a "+ d.name + " (Rechte Y-Axe)");
         })
 
     svg
