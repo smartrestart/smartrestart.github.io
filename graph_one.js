@@ -62,6 +62,49 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
       };
     });
 
+    // List of groups (here I have one group per column)
+    var allGroupOpt = ["Free_Viral_Opt"];
+    var secondGroupOpt = ["Value_Infectious_Opt"];
+
+    // Reformat the data: we need an array of arrays of {x, y} tuples
+    var dataReadyOpt = allGroupOpt.map( function(grpName) { // .map allows to do something for each element of the list
+      return {
+        name: grpName,
+        values: data.map(function(d) {
+          return {time: d.Datum, value: +d[grpName]};
+        })
+      };
+    });
+var dataReady2Opt = secondGroupOpt.map( function(grpName) { // .map allows to do something for each element of the list
+  return {
+    name: grpName,
+    values: data.map(function(d) {
+      return {time: d.Datum, value: +d[grpName]};
+    })
+  };
+});
+
+// List of groups (here I have one group per column)
+var allGroupPess = ["Free_Viral_Pess"];
+var secondGroupPess = ["Value_Infectious_Pess"];
+
+// Reformat the data: we need an array of arrays of {x, y} tuples
+var dataReadyPess = allGroupPess.map( function(grpName) { // .map allows to do something for each element of the list
+  return {
+    name: grpName,
+    values: data.map(function(d) {
+      return {time: d.Datum, value: +d[grpName]};
+    })
+  };
+});
+var dataReady2Pess = secondGroupPess.map( function(grpName) { // .map allows to do something for each element of the list
+return {
+name: grpName,
+values: data.map(function(d) {
+  return {time: d.Datum, value: +d[grpName]};
+})
+};
+});
 
     // A color scale: one color for each group
     var myColor = d3.scaleOrdinal()
@@ -110,7 +153,7 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
 
 
       	y.domain([0,
-                  d3.max([d3.max(data, function(d) { return +d.Viral_Pot; }),d3.max(data, function(d) { return +d.Free_Viral; })])]);
+                  d3.max(data, function(d) { return +d.Free_Viral; })]);
                     //allGroup.map( function(d) {
                     //console.log(d3.max(d.value.values));
                     //return d3.max(d.value.values);
@@ -310,8 +353,8 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
       .enter()
         .append('g')
         .append("text")
-          .attr('y', function(d,i){ return height+50 + (i+1)*20})
-          .attr('x', 30)
+          .attr('y', height+50)
+          .attr('x', 200)
           .text(function(d) { return "\uf14a "+ d.name + " (Linke y-Achse)"; })
           .attr("class", "fa")
           .attr("class","fas fa-adjust")
@@ -333,8 +376,8 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
       .enter()
         .append('g')
         .append("text")
-          .attr('y', height+50+3*20)
-          .attr('x', 30)
+          .attr('y', height+50)
+          .attr('x', 600)
           .text(function(d) { return "\uf14a"+ d.name + " (Rechte y-Achse)"; })
           .attr("class", "fa")
           .attr("class","fas fa-adjust")
@@ -354,8 +397,8 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
           .enter()
             .append('g')
             .append("text")
-              .attr('y', function(d,i){ return height+50 + (i+1)*20})
-              .attr('x', 600)
+              .attr('y', height+50+20)
+              .attr('x', 200)
               .text(function(d) { return "\uf0c8 "+ d.name + " (Linke y-Achse)"; })
               .attr("class", "fa")
               .attr("class","fas fa-adjust")
@@ -377,7 +420,7 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
           .enter()
             .append('g')
             .append("text")
-              .attr('y', height+50+3*20)
+              .attr('y', height+50+20)
               .attr('x', 600)
               .text(function(d) { return "\uf0c8"+ d.name + " (Rechte y-Achse)"; })
               .attr("class", "fa")
@@ -394,17 +437,30 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
 
     svg
     .selectAll("LegendTitle").data(dataReady).enter().append('g').append("text")
-    .attr('x', 30)
+    .attr('x', 0)
     .attr('y', height+50)
-    .text('Scenario Base5')
+    .text('Szenario Basis')
     .style("fill", "black")
     .style("font-size", 15)
-
     svg
     .selectAll("LegendTitlePlus").data(dataReadyPlus).enter().append('g').append("text")
-    .attr('x', 600)
-    .attr('y', height+50)
-    .text('Scenario BasePlus5')
+    .attr('x', 0)
+    .attr('y', height+50+20)
+    .text('Szenario Basis-Plus')
+    .style("fill", "black")
+    .style("font-size", 15)
+    svg
+    .selectAll("LegendTitleOpt").data(dataReady).enter().append('g').append("text")
+    .attr('x', 0)
+    .attr('y', height+50+40)
+    .text('Szenario Optimistisch')
+    .style("fill", "black")
+    .style("font-size", 15)
+    svg
+    .selectAll("LegendTitlePess").data(dataReadyPlus).enter().append('g').append("text")
+    .attr('x', 0)
+    .attr('y', height+50+60)
+    .text('Szenario Pessimistisch')
     .style("fill", "black")
     .style("font-size", 15)
 
