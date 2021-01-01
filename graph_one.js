@@ -18,7 +18,7 @@ var svg = d3.select("#my_dataviz")
 //Read the data
 d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/master/output/data.csv", function(data) {
     // List of groups (here I have one group per column)
-    var allGroup = ["Viral_Pot", "Free_Viral"];
+    var allGroup = ["Free_Viral"];
     var secondGroup = ["Value_Infectious"];
 
     // Reformat the data: we need an array of arrays of {x, y} tuples
@@ -41,7 +41,7 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
     });
 
         // List of groups (here I have one group per column)
-        var allGroupPlus = ["Viral_Pot_Plus", "Free_Viral_Plus"];
+        var allGroupPlus = ["Free_Viral_Plus"];
         var secondGroupPlus = ["Value_Infectious_Plus"];
 
         // Reformat the data: we need an array of arrays of {x, y} tuples

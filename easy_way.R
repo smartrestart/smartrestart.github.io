@@ -1,11 +1,19 @@
 library(readxl)
 library(ggplot2)
-chbase5<-read_excel("input/Corona_Virus_2020_291220.xlsx",sheet="CH 5 base neu",skip=45)
+chbase5<-read_excel("input/Corona_Virus_2020_actual.xlsx",sheet="CH 5 base neu",skip=45)
 
 names(chbase5)[1]<-"Datum"
 names(chbase5)[22]<-"Viral_Pot"
 names(chbase5)[27]<-"Value_Infectious"
 names(chbase5)[50]<-"Free_Viral"
+names(chbase5)[82]<-"Viraliät_in_%"
+names(chbase5)[84]<-"Viralität_pro_X"
+names(chbase5)[23]<-"Dunkelziffer"
+
+chbase5$Viralität_pro_X<-chbase5$Viralität_pro_X/25
+chbase5$Menschen_mit_Viruskontakt<-as.numeric(chbase5[,46][[1]])*chbase5[,25][[1]][[1]]
+
+
 
 nrow(chbase5)
 #when date has no values it is additional data afterwards that should be deleted
@@ -14,6 +22,9 @@ chbase5<-chbase5[!is.na(chbase5[,1]),]
 chbase5<-chbase5[!is.na(chbase5$Viral_Pot),]
 nrow(chbase5)
 
+#reduce cols
+chbase5<-chbase5[,c("Datum","Viral_Pot","Value_Infectious","Free_Viral",
+                            "Viraliät_in_%","Viralität_pro_X","Dunkelziffer","Menschen_mit_Viruskontakt")]
 
 ggplot(data=chbase5,aes(x=Datum,y=Viral_Pot))+ geom_point() + geom_line()+
   scale_y_continuous(labels = function(x) format(x, scientific = FALSE))
@@ -24,13 +35,19 @@ ggplot(data=chbase5,aes(x=Datum,y=Value_Infectious))+ geom_point() + geom_line()
 ggplot(data=chbase5,aes(x=Datum,y=Free_Viral))+ geom_point() + geom_line()+
   scale_y_continuous(labels = function(x) format(x, scientific = FALSE))
 
-chbaseplus5<-read_excel("input/Corona_Virus_2020_291220.xlsx",sheet="CH 5 baseplus neu (2)",skip=45)
+chbaseplus5<-read_excel("input/Corona_Virus_2020_actual.xlsx",sheet="CH 5 baseplus neu",skip=45)
 
 nrow(chbaseplus5)
 names(chbaseplus5)[1]<-"Datum"
 names(chbaseplus5)[22]<-"Viral_Pot_Plus"
 names(chbaseplus5)[27]<-"Value_Infectious_Plus"
 names(chbaseplus5)[50]<-"Free_Viral_Plus"
+names(chbaseplus5)[82]<-"Viraliät_in_%_Plus"
+names(chbaseplus5)[84]<-"Viralität_pro_X_Plus"
+names(chbaseplus5)[23]<-"Dunkelziffer_Plus"
+
+chbaseplus5$Viralität_pro_X_Plus<-chbaseplus5$Viralität_pro_X_Plus/25
+chbaseplus5$Menschen_mit_Viruskontakt_Plus<-as.numeric(chbaseplus5[,46][[1]])*chbaseplus5[,25][[1]]
 
 nrow(chbaseplus5)
 #when date has no values it is additional data afterwards that should be deleted
@@ -39,9 +56,61 @@ chbaseplus5<-chbaseplus5[!is.na(chbaseplus5[,1]),]
 chbaseplus5<-chbaseplus5[!is.na(chbaseplus5$Viral_Pot_Plus),]
 
 #reduce cols
-chbaseplus5<-chbaseplus5[,c("Datum","Viral_Pot_Plus","Value_Infectious_Plus","Free_Viral_Plus")]
+chbaseplus5<-chbaseplus5[,c("Datum","Viral_Pot_Plus","Value_Infectious_Plus","Free_Viral_Plus",
+                            "Viraliät_in_%_Plus","Viralität_pro_X_Plus","Dunkelziffer_Plus","Menschen_mit_Viruskontakt_Plus")]
+
+chbaseopt5<-read_excel("input/Corona_Virus_2020_actual.xlsx",sheet="CH 5 opt neu",skip=45)
+
+nrow(chbaseopt5)
+names(chbaseopt5)[1]<-"Datum"
+names(chbaseopt5)[22]<-"Viral_Pot_Opt"
+names(chbaseopt5)[27]<-"Value_Infectious_Opt"
+names(chbaseopt5)[50]<-"Free_Viral_Opt"
+names(chbaseopt5)[82]<-"Viraliät_in_%_Opt"
+names(chbaseopt5)[84]<-"Viralität_pro_X_Opt"
+names(chbaseopt5)[23]<-"Dunkelziffer_Opt"
+
+chbaseopt5$Viralität_pro_X_Opt<-chbaseopt5$Viralität_pro_X_Opt/25
+chbaseopt5$Menschen_mit_Viruskontakt_Opt<-as.numeric(chbaseopt5[,46][[1]])*chbaseopt5[,25][[1]]
+
+nrow(chbaseopt5)
+#when date has no values it is additional data afterwards that should be deleted
+chbaseopt5<-chbaseopt5[!is.na(chbaseopt5[,1]),]
+#at the last 5 lines there are now till some NAs
+chbaseopt5<-chbaseopt5[!is.na(chbaseopt5$Viral_Pot_Opt),]
+
+#reduce cols
+chbaseopt5<-chbaseopt5[,c("Datum","Viral_Pot_Opt","Value_Infectious_Opt","Free_Viral_Opt",
+                            "Viraliät_in_%_Opt","Viralität_pro_X_Opt","Dunkelziffer_Opt","Menschen_mit_Viruskontakt_Opt")]
+
+chbasepess5<-read_excel("input/Corona_Virus_2020_actual.xlsx",sheet="CH 5 pess neu",skip=45)
+
+nrow(chbasepess5)
+names(chbasepess5)[1]<-"Datum"
+names(chbasepess5)[22]<-"Viral_Pot_Pess"
+names(chbasepess5)[27]<-"Value_Infectious_Pess"
+names(chbasepess5)[50]<-"Free_Viral_Pess"
+names(chbasepess5)[82]<-"Viraliät_in_%_Pess"
+names(chbasepess5)[84]<-"Viralität_pro_X_Pess"
+names(chbasepess5)[23]<-"Dunkelziffer_Pess"
+
+chbasepess5$Viralität_pro_X_Pess<-chbasepess5$Viralität_pro_X_Pess/25
+chbasepess5$Menschen_mit_Viruskontakt_Pess<-as.numeric(chbasepess5[,46][[1]])*chbasepess5[,25][[1]]
+
+nrow(chbasepess5)
+#when date has no values it is additional data afterwards that should be deleted
+chbasepess5<-chbasepess5[!is.na(chbasepess5[,1]),]
+#at the last 5 lines there are now till some NAs
+chbasepess5<-chbasepess5[!is.na(chbasepess5$Viral_Pot_Pess),]
+
+#reduce cols
+chbasepess5<-chbasepess5[,c("Datum","Viral_Pot_Pess","Value_Infectious_Pess","Free_Viral_Pess",
+                          "Viraliät_in_%_Pess","Viralität_pro_X_Pess","Dunkelziffer_Pess","Menschen_mit_Viruskontakt_Pess")]
+
+
 #cbind()
 merged<-merge(chbase5,chbaseplus5, by="Datum")
-
-write.csv(merged,"output/data.csv",row.names = FALSE)
+merged2<-merge(chbaseopt5,chbasepess5, by="Datum")
+merged3<-merge(merged,merged2, by="Datum")
+write.csv(merged3,"output/data.csv",row.names = FALSE)
 
