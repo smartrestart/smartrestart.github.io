@@ -41,6 +41,7 @@
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="https://smartrestart.github.io/smartrestart.github.io/moving_average.js"></script>
 <script src="graph_one.js"></script>
+
 <body>
 
   <!-- ======= Header ======= -->
@@ -189,8 +190,26 @@
 
           <div id="my_dataviz"></div>
           </div>
-          <p><br>Klicken Sie auf die einzelnen Datenlinien, um diese einzublenden.</p>
           </div>
+
+<div class="row content"><div class="col-lg-12 d-flex justify-content-center">
+
+
+  <table class="table table-sm"><tbody><tr><td><label for="lyachse1">Max. linke y-Achse :</label></td><td><label for="ryachse1">Max. rechte y-Achse :</label></td><td>
+<label for="xachsestart1">Startdatum:</label></td><td><label for="xachseende1">Enddatum:</label></td></tr>
+<tr><td><input type="text" id="lyachse1" name="lyachse1"></td><td>
+  <input type="text" id="ryachse1" name="ryachse1"></td><td>
+  <input type="date" id="xachsestart1" name="xachsestart1" value="2020-09-01" min="2020-03-04" max="2021-03-01" ></td><td>
+  <input type="date" id="xachseende1" name="xachseende1" value=enddate min="2020-03-04" max="2021-03-01" </td></tr></tbody></table>
+<!--
+  <form>
+     <div class="form-group"><label for="lyachse1">Max. linke y-Achse:&nbsp; </label><input type="text" id="lyachse1" name="lyachse1"></div>
+     <div class="form-group"><label for="ryachse1">Max. rechte y-Achse:&nbsp; </label><input type="text" id="ryachse1" name="ryachse1"></div>
+   <div class="form-group"><label for="xachsestart1">Startdatum:&nbsp; </label><input type="date" id="xachsestart1" name="xachsestart1" value="2018-07-22" min="2018-01-01" max="2018-12-31"></div>
+   <div class="form-group"><label for="xachseende1">Enddatum:&nbsp; </label><input type="date" id="xachseende1" name="xachseende1" value="2018-07-22" min="2018-01-01" max="2018-12-31"></div>
+</form>-->
+
+          </div></div>
           <div class="row content">
           <p><br>Weiteres blabla.</p>
 
@@ -296,6 +315,39 @@
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
 
+  <script>
+  function addMonths(date, months) {
+      let newDate = new Date(date);
+      var day = newDate.getDate();
+      newDate.setMonth(newDate.getMonth() + +months);
+      if (newDate.getDate() != day)
+          newDate.setDate(0);
+      return newDate;
+  }
+  var todaydate= new Date();
+
+
+
+  var today=addMonths(todaydate,1);
+  var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+var yyyy = today.getFullYear();
+today = yyyy + '-' + mm + '-' + dd;
+document.getElementById('xachseende1').value=today;
+document.getElementById('xachsestart1').value="2020-09-01";
+  today=addMonths(todaydate,2);
+  dd = String(today.getDate()).padStart(2, '0');
+mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+yyyy = today.getFullYear();
+today = yyyy + '-' + mm + '-' + dd;
+
+  console.log(today);
+
+  document.getElementById('xachseende1').max=today;
+  document.getElementById('xachsestart1').max=today;
+document.getElementById('lyachse1').value="";
+document.getElementById('ryachse1').value="";
+  </script>
 </body>
 
 </html>
