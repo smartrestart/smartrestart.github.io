@@ -19,7 +19,7 @@ var svg = d3.select("#my_dataviz2")
 d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/master/output/data.csv", function(data) {
     // List of groups (here I have one group per column)
     var allGroup = ["Viralität_pro_X"];
-    var secondGroup = ["Viraliät_in_Proz"];
+    var secondGroup = ["Viralität_in_Proz"];
     console.log(data);
     // Reformat the data: we need an array of arrays of {x, y} tuples
     var dataReady = allGroup.map( function(grpName) { // .map allows to do something for each element of the list
@@ -42,7 +42,7 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
 
         // List of groups (here I have one group per column)
         var allGroupPlus = ["Viralität_pro_X_Plus"];
-        var secondGroupPlus = ["Viraliät_in_Proz_Plus"];
+        var secondGroupPlus = ["Viralität_in_Proz_Plus"];
 
         // Reformat the data: we need an array of arrays of {x, y} tuples
         var dataReadyPlus = allGroupPlus.map( function(grpName) { // .map allows to do something for each element of the list
@@ -64,7 +64,7 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
 
     // List of groups (here I have one group per column)
     var allGroupOpt = ["Viralität_pro_X_Opt"];
-    var secondGroupOpt = ["Viraliät_in_Proz_Opt"];
+    var secondGroupOpt = ["Viralität_in_Proz_Opt"];
 
     // Reformat the data: we need an array of arrays of {x, y} tuples
     var dataReadyOpt = allGroupOpt.map( function(grpName) { // .map allows to do something for each element of the list
@@ -86,7 +86,7 @@ var dataReady2Opt = secondGroupOpt.map( function(grpName) { // .map allows to do
 
 // List of groups (here I have one group per column)
 var allGroupPess = ["Viralität_pro_X_Pess"];
-var secondGroupPess = ["Viraliät_in_Proz_Pess"];
+var secondGroupPess = ["Viralität_in_Proz_Pess"];
 
 // Reformat the data: we need an array of arrays of {x, y} tuples
 var dataReadyPess = allGroupPess.map( function(grpName) { // .map allows to do something for each element of the list
@@ -109,7 +109,7 @@ values: data.map(function(d) {
     // A color scale: one color for each group
     var myColor = d3.scaleOrdinal()
       .domain(allGroup)
-      .range(d3.schemeSet3);
+      .range(d3.schemeTableau10);
 
     // Add X axis --> it is a date format
     //var x = d3.scaleLinear()
@@ -143,9 +143,9 @@ values: data.map(function(d) {
 
 
       var z = d3.scaleLinear()
-        .domain( [0,1])
+        .domain( [0,3])//d3.max(data, function(d) { return +d.Viralität_in_Proz; })+0.5])
         .range([ height, 0 ]);
-        var z_axis = d3.axisRight(z);
+        var z_axis = d3.axisRight(z).tickFormat(d => d + "%");
       svg.append("g")
       .attr("class", "zaxis")
       .attr("transform", "translate( " + width + ", 0 )")

@@ -143,7 +143,7 @@ values: data.map(function(d) {
 
 
       var z = d3.scaleLinear()
-        .domain( [0,1])
+        .domain( [0,d3.max(data, function(d) { return +d.Value_Infectious; })])
         .range([ height, 0 ]);
         var z_axis = d3.axisRight(z);
       svg.append("g")
