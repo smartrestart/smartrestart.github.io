@@ -7,7 +7,7 @@ var margin = {top: 50, right: 180, bottom: 120, left: 50},
     height = 600 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
-var svg = d3.select("#my_dataviz")
+var svg = d3.select("#my_dataviz2")
   .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -18,9 +18,9 @@ var svg = d3.select("#my_dataviz")
 //Read the data
 d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/master/output/data.csv", function(data) {
     // List of groups (here I have one group per column)
-    var allGroup = ["Free_Viral"];
-    var secondGroup = ["Value_Infectious"];
-
+    var allGroup = ["Viralität_pro_X"];
+    var secondGroup = ["Viraliät_in_Proz"];
+    console.log(data);
     // Reformat the data: we need an array of arrays of {x, y} tuples
     var dataReady = allGroup.map( function(grpName) { // .map allows to do something for each element of the list
       return {
@@ -41,8 +41,8 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
     });
 
         // List of groups (here I have one group per column)
-        var allGroupPlus = ["Free_Viral_Plus"];
-        var secondGroupPlus = ["Value_Infectious_Plus"];
+        var allGroupPlus = ["Viralität_pro_X_Plus"];
+        var secondGroupPlus = ["Viraliät_in_Proz_Plus"];
 
         // Reformat the data: we need an array of arrays of {x, y} tuples
         var dataReadyPlus = allGroupPlus.map( function(grpName) { // .map allows to do something for each element of the list
@@ -63,8 +63,8 @@ d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/ma
     });
 
     // List of groups (here I have one group per column)
-    var allGroupOpt = ["Free_Viral_Opt"];
-    var secondGroupOpt = ["Value_Infectious_Opt"];
+    var allGroupOpt = ["Viralität_pro_X_Opt"];
+    var secondGroupOpt = ["Viraliät_in_Proz_Opt"];
 
     // Reformat the data: we need an array of arrays of {x, y} tuples
     var dataReadyOpt = allGroupOpt.map( function(grpName) { // .map allows to do something for each element of the list
@@ -85,8 +85,8 @@ var dataReady2Opt = secondGroupOpt.map( function(grpName) { // .map allows to do
 });
 
 // List of groups (here I have one group per column)
-var allGroupPess = ["Free_Viral_Pess"];
-var secondGroupPess = ["Value_Infectious_Pess"];
+var allGroupPess = ["Viralität_pro_X_Pess"];
+var secondGroupPess = ["Viraliät_in_Proz_Pess"];
 
 // Reformat the data: we need an array of arrays of {x, y} tuples
 var dataReadyPess = allGroupPess.map( function(grpName) { // .map allows to do something for each element of the list
