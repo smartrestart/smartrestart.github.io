@@ -119,5 +119,5 @@ merged3<-merge(merged,merged2, by="Datum")
 write.csv(merged3,"output/data.csv",row.names = FALSE)
 
 fileConn<-file("output/lastupdate.csv")
-writeLines(as.character(Sys.Date()), fileConn)
+writeLines(c("lastupdate",as.character(Sys.Date())), fileConn)
 close(fileConn)

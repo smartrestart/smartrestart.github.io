@@ -16,12 +16,13 @@ var svg = d3.select("#my_dataviz")
           "translate(" + margin.left + "," + margin.top + ")");
 
 var lastupdatestring;
-d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/master/output/lastupdate.txt", function(data) {
-  console.log("blabla");
-  console.log(data);
-  lastupdatestring=data[0];
+d3.text("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/master/output/lastupdate.csv", function(data) {
+  console.log(data.name);
+  console.log(d3.csvParse(data));
+  lastupdatestring=data[1];
+  console.log(lastupdatestring);
 });
-console.log(lastupdatestring);
+
 //Read the data
 d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/master/output/data.csv", function(data) {
     // List of groups (here I have one group per column)
