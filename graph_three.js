@@ -495,6 +495,52 @@ var calc_ymax= d3.format(".1f")(d3.max(data, function(d) { return +(d.Dunkelziff
                         .style("font-size", 15)
                         .style('opacity', function(d) {currentOpacity = d3.selectAll("." + d.name).style("opacity");if (welches == "start") {return 0.0} else{return currentOpacity};})
 */
+var u = svg.selectAll(".lastupdate")
+.data(dataReady);
+
+//svg.append("line")
+u
+.enter()
+
+//.append("path").attr('clip-path', 'url(#clip)')
+.append("g")
+
+.append("line")
+.attr('clip-path', 'url(#clip)')
+
+.attr("class","lastupdate")
+.merge(u)
+.transition()
+.duration(1000)
+.attr("x1", x(parseTime("2021-01-02")))  //<<== change your code here
+.attr("y1", 0)
+.attr("x2", x(parseTime("2021-01-02")))  //<<== and here
+.attr("y2", height)
+.style("stroke-width", 1)
+.style("stroke-dasharray", ("3, 3"))
+.style("stroke", "black")
+.style("fill", "none");
+var u = svg.selectAll(".lastupdatetext")
+.data(dataReady);
+
+u
+.enter()
+
+.append("g")
+
+    .append("text")
+    .attr('clip-path', 'url(#clip)')
+
+    .attr("font-size", 12)
+    .attr("class","lastupdatetext")
+    .merge(u)
+    .transition()
+    .duration(1000)
+      .attr('y', 30)
+      .attr('x', x(parseTime("2021-01-02"))+5)
+      .text('Last Update: '+ "2021-01-02")
+      .style("fill", "black")
+      
     }//end of update function
     update3(-1,"start");
 

@@ -118,3 +118,6 @@ merged2<-merge(chbaseopt5,chbasepess5, by="Datum")
 merged3<-merge(merged,merged2, by="Datum")
 write.csv(merged3,"output/data.csv",row.names = FALSE)
 
+fileConn<-file("output/lastupdate.txt")
+writeLines(as.character(Sys.Date()), fileConn)
+close(fileConn)
