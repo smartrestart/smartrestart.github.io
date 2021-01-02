@@ -141,10 +141,11 @@ values: data.map(function(d) {
 
 
 
-
+      var calc_zmax= d3.format(".1f")(d3.max(data, function(d) { return +d.Value_Infectious; }));
       var z = d3.scaleLinear()
-        .domain( [0,d3.max(data, function(d) { return +d.Value_Infectious; })])
+        .domain( [0,calc_zmax])
         .range([ height, 0 ]);
+        document.getElementById("ryachse1").value=calc_zmax;
         var z_axis = d3.axisRight(z);
       svg.append("g")
       .attr("class", "zaxis")
@@ -156,9 +157,10 @@ values: data.map(function(d) {
 
 
 
-
-      	y.domain([0,
-                  d3.max(data, function(d) { return +d.Free_Viral; })]);
+var calc_ymax= d3.format(".2r")(d3.max(data, function(d) { return +(d.Free_Viral); }));
+      	y.domain([0,calc_ymax]);
+        document.getElementById("lyachse1").value=calc_ymax;
+                  //d3.max(data, function(d) { return +d.Free_Viral; })]);
                     //allGroup.map( function(d) {
                     //console.log(d3.max(d.value.values));
                     //return d3.max(d.value.values);

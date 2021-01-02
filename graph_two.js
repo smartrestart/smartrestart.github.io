@@ -126,7 +126,7 @@ values: data.map(function(d) {
   x.domain([parseTime(document.getElementById("xachsestart2").value),parseTime(document.getElementById("xachseende2").value)]);
   var x_axis = d3.axisBottom(x).tickFormat(d3.timeFormat(xFormat)).ticks(d3.timeFormat.month, 2);
   svg.append("g")
-  .attr("class", "xaxis")
+  .attr("class", "xaxis2")
     .attr("transform", "translate(0," + height + ")")
   //  .call(d3.axisBottom(x));
   .call(x_axis) ;
@@ -141,13 +141,14 @@ values: data.map(function(d) {
 
 
 
-
+      var calc_zmax= d3.format(".1f")(d3.max(data, function(d) { return +d.Viralität_in_Proz; })+0.5);
       var z = d3.scaleLinear()
-        .domain( [0,3])//d3.max(data, function(d) { return +d.Viralität_in_Proz; })+0.5])
+        .domain( [0,calc_zmax])//d3.max(data, function(d) { return +d.Viralität_in_Proz; })+0.5])
         .range([ height, 0 ]);
+      document.getElementById("ryachse2").value=calc_zmax;
         var z_axis = d3.axisRight(z).tickFormat(d => d + "%");
       svg.append("g")
-      .attr("class", "zaxis")
+      .attr("class", "zaxis2")
       .attr("transform", "translate( " + width + ", 0 )")
         .call(z_axis);
 
@@ -155,17 +156,13 @@ values: data.map(function(d) {
 
 
 
+        var calc_ymax= d3.format(".1f")(d3.max(data, function(d) { return +(d.Viralität_pro_X*document.getElementById("xwert").value); }));
+
+      	y.domain([0,//0.5]);
+                  calc_ymax]);
+        document.getElementById("lyachse2").value=calc_ymax;
 
 
-      	y.domain([0,
-                  d3.max(data, function(d) { return +d.Viralität_pro_X; })]);
-                    //allGroup.map( function(d) {
-                    //console.log(d3.max(d.value.values));
-                    //return d3.max(d.value.values);
-                  //}))]);
-
-                  //svg.append("g")
-                  //  .call(d3.axisLeft(y));
 
                   var yAxis = d3.axisLeft(y);
                   //var yAxis = d3.axis()
@@ -173,7 +170,7 @@ values: data.map(function(d) {
       //.scale(y);
 
       svg.append("g")
-         .attr("class", "yaxis")
+         .attr("class", "yaxis2")
      .attr("transform", "translate("+0+",0)")
      .call(yAxis);
      //svg.append("g")
@@ -186,13 +183,15 @@ values: data.map(function(d) {
        x.domain([parseTime(document.getElementById("xachsestart2").value),parseTime(document.getElementById("xachseende2").value)]);
        switch(welches) {
          case "lyachse":  console.log("lyachse"); y.domain([0,inputWert]);
-         d3.select(".yaxis").transition().duration(1000).call(d3.axisLeft(y)); break;
+         d3.select(".yaxis2").transition().duration(1000).call(d3.axisLeft(y)); break;
+         case "xwert":  console.log("xwert"); y.domain([0,document.getElementById("lyachse2").value]);
+         d3.select(".yaxis2").transition().duration(1000).call(d3.axisLeft(y)); break;
          case "ryachse":  z.domain([0,inputWert]);
-         d3.select(".zaxis").transition().duration(1000).call(d3.axisRight(z)); break;
+         d3.select(".zaxis2").transition().duration(1000).call(d3.axisRight(z).tickFormat(d => d + "%")); break;
          case "xachsestart":
-         d3.select(".xaxis").transition().duration(1000).call(d3.axisBottom(x).tickFormat(d3.timeFormat(xFormat)).ticks(d3.timeFormat.month, 2)); break;
+         d3.select(".xaxis2").transition().duration(1000).call(d3.axisBottom(x).tickFormat(d3.timeFormat(xFormat)).ticks(d3.timeFormat.month, 2)); break;
          case "xachseende":
-         d3.select(".xaxis").transition().duration(1000).call(d3.axisBottom(x).tickFormat(d3.timeFormat(xFormat)).ticks(d3.timeFormat.month, 2)); break;
+         d3.select(".xaxis2").transition().duration(1000).call(d3.axisBottom(x).tickFormat(d3.timeFormat(xFormat)).ticks(d3.timeFormat.month, 2)); break;
          case "start": console.log("printing graphic");break;
        }
 
@@ -219,7 +218,7 @@ values: data.map(function(d) {
 
  var line = d3.line()
    .x(function(d) { return x(parseTime(d.time)); })
-   .y(function(d) { return y(+d.value) })
+   .y(function(d) { return y(+d.value*document.getElementById("xwert").value) })
    u
      .enter()
      .append("path").attr('clip-path', 'url(#clip)')
@@ -250,7 +249,7 @@ values: data.map(function(d) {
 
         var movLine = d3.line()
     .x(function(d) { return x(parseTime(d.time)); })
-    .y(function(d) { return y(+d.value) })
+    .y(function(d) { return y(+d.value*document.getElementById("xwert").value) })
     //.interpolate(movingAvg(7))
 
     var u = svg.selectAll(".movMyLines")
@@ -315,7 +314,7 @@ values: data.map(function(d) {
 //Jetzt für Plus-Szeario
             var linePlus = d3.line()
               .x(function(d) { return x(parseTime(d.time)); })
-              .y(function(d) { return y(+d.value) })
+              .y(function(d) { return y(+d.value*document.getElementById("xwert").value) })
 
               var u = svg.selectAll(".myLinesPlus")
           .data(dataReadyPlus);
@@ -339,7 +338,7 @@ values: data.map(function(d) {
 
                 var movLinePlus = d3.line()
             .x(function(d) { return x(parseTime(d.time)); })
-            .y(function(d) { return y(+d.value) })
+            .y(function(d) { return y(+d.value*document.getElementById("xwert").value) })
             //.interpolate(movingAvg(7))
 
             var u = svg.selectAll(".movMyLinesPlus")
@@ -416,7 +415,7 @@ values: data.map(function(d) {
   //Jetzt für Opt-Szeario
               var lineOpt = d3.line()
                 .x(function(d) { return x(parseTime(d.time)); })
-                .y(function(d) { return y(+d.value) })
+                .y(function(d) { return y(+d.value*document.getElementById("xwert").value) })
 
                 var u = svg.selectAll(".myLinesOpt")
             .data(dataReadyOpt);
@@ -440,7 +439,7 @@ values: data.map(function(d) {
 
                   var movLineOpt = d3.line()
               .x(function(d) { return x(parseTime(d.time)); })
-              .y(function(d) { return y(+d.value) })
+              .y(function(d) { return y(+d.value*document.getElementById("xwert").value) })
               //.interpolate(movingAvg(7))
 
               var u = svg.selectAll(".movMyLinesOpt")
@@ -517,7 +516,7 @@ values: data.map(function(d) {
 //Jetzt für Pess-Szeario
             var linePess = d3.line()
               .x(function(d) { return x(parseTime(d.time)); })
-              .y(function(d) { return y(+d.value) })
+              .y(function(d) { return y(+d.value*document.getElementById("xwert").value) })
 
               var u = svg.selectAll(".myLinesPess")
           .data(dataReadyPess);
@@ -541,7 +540,7 @@ values: data.map(function(d) {
 
                 var movLinePess = d3.line()
             .x(function(d) { return x(parseTime(d.time)); })
-            .y(function(d) { return y(+d.value) })
+            .y(function(d) { return y(+d.value*document.getElementById("xwert").value) })
             //.interpolate(movingAvg(7))
 
             var u = svg.selectAll(".movMyLinesPess")
@@ -949,6 +948,9 @@ values: data.map(function(d) {
 // when the input range changes update value
 d3.select("#lyachse2").on("input", function() {
   update2(+this.value,"lyachse");
+});
+d3.select("#xwert").on("input", function() {
+  update2(+this.value,"xwert");
 });
 d3.select("#ryachse2").on("input", function() {
   update2(+this.value,"ryachse");
