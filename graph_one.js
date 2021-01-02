@@ -17,7 +17,9 @@ var svg = d3.select("#my_dataviz")
 
 var lastupdatestring;
 d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/master/output/lastupdate.txt", function(data) {
-  lastupdatestring=data;
+  console.log("blabla");
+  console.log(data);
+  lastupdatestring=data[0];
 });
 console.log(lastupdatestring);
 //Read the data
