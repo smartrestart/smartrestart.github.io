@@ -15,12 +15,8 @@ var svg = d3.select("#my_dataviz")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
-var lastupdatestring;
-d3.text("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/master/output/lastupdate.csv", function(data) {
-  console.log(data.name);
-  console.log(d3.csvParse(data));
-  lastupdatestring=data[1];
-  console.log(lastupdatestring);
+d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/master/output/lastupdate.csv", function(data) {
+  lastupdatestring=data[0]['lastupdate'];
 });
 
 //Read the data
@@ -770,9 +766,9 @@ u
 .merge(u)
 .transition()
 .duration(1000)
-.attr("x1", x(parseTime("2021-01-02")))  //<<== change your code here
+.attr("x1", x(parseTime(lastupdatestring)))  //<<== change your code here
 .attr("y1", 0)
-.attr("x2", x(parseTime("2021-01-02")))  //<<== and here
+.attr("x2", x(parseTime(lastupdatestring)))  //<<== and here
 .attr("y2", height)
 .style("stroke-width", 1)
 .style("stroke-dasharray", ("3, 3"))
@@ -795,8 +791,8 @@ u
     .transition()
     .duration(1000)
       .attr('y', 30)
-      .attr('x', x(parseTime("2021-01-02"))+5)
-      .text('Last Update: '+ "2021-01-02")
+      .attr('x', x(parseTime(lastupdatestring))+5)
+      .text('Last Update: '+ lastupdatestring)
       .style("fill", "black")
 
 

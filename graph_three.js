@@ -15,6 +15,9 @@ var svg = d3.select("#my_dataviz3")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
+d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/master/output/lastupdate.csv", function(data) {
+  lastupdatestring=data[0]['lastupdate'];
+});
 //Read the data
 d3.csv("https://raw.githubusercontent.com/smartrestart/smartrestart.github.io/master/output/data.csv", function(data) {
     // List of groups (here I have one group per column)
@@ -512,9 +515,9 @@ u
 .merge(u)
 .transition()
 .duration(1000)
-.attr("x1", x(parseTime("2021-01-02")))  //<<== change your code here
+.attr("x1", x(parseTime(lastupdatestring)))  //<<== change your code here
 .attr("y1", 0)
-.attr("x2", x(parseTime("2021-01-02")))  //<<== and here
+.attr("x2", x(parseTime(lastupdatestring)))  //<<== and here
 .attr("y2", height)
 .style("stroke-width", 1)
 .style("stroke-dasharray", ("3, 3"))
@@ -537,10 +540,10 @@ u
     .transition()
     .duration(1000)
       .attr('y', 30)
-      .attr('x', x(parseTime("2021-01-02"))+5)
-      .text('Last Update: '+ "2021-01-02")
+      .attr('x', x(parseTime(lastupdatestring))+5)
+      .text('Last Update: '+ lastupdatestring)
       .style("fill", "black")
-      
+
     }//end of update function
     update3(-1,"start");
 
