@@ -109,7 +109,7 @@ values: data.map(function(d) {
     // A color scale: one color for each group
     var myColor = d3.scaleOrdinal()
       .domain(allGroup)
-      .range(d3.schemeSet2);
+      .range(d3.schemeCategory10);
 
     // Add X axis --> it is a date format
     //var x = d3.scaleLinear()
@@ -225,9 +225,11 @@ var calc_ymax= d3.format(".2r")(d3.max(data, function(d) { return +(d.Free_Viral
    u
      .enter()
      .append("path").attr('clip-path', 'url(#clip)')
+
      //.attr("class", "myLines")
      .attr("class", function(d){ return "myLines "+d.name })
      //.attr("class", "myLines")
+
 
      .merge(u)
 .transition()
@@ -238,6 +240,10 @@ var calc_ymax= d3.format(".2r")(d3.max(data, function(d) { return +(d.Free_Viral
        .style("stroke-width", 2)
        .style("fill", "none")
 
+
+
+
+
     //svg.selectAll("myLines")
     //  .data(dataReady)
     //  .enter()
@@ -247,8 +253,8 @@ var calc_ymax= d3.format(".2r")(d3.max(data, function(d) { return +(d.Free_Viral
     //    .attr("stroke", function(d){ return myColor(d.name) })
     //    .style("stroke-width", 2)
     //    .style("fill", "none")
-        //.append("svg:title")
-        //  .text(function(d,i) { return "Datum " + parseTime(i.time) + " Wert: " + i.value; });
+    //    .append("svg:title")
+    //      .text(function(d,i) { return "Datum " + parseTime(i.time) + " Wert: " + i.value; });
 
         var movLine = d3.line()
     .x(function(d) { return x(parseTime(d.time)); })
