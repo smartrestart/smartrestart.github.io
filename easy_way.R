@@ -11,6 +11,7 @@ names(chbase5)[84]<-"Viralität_pro_X"
 names(chbase5)[23]<-"Dunkelziffer"
 
 chbase5$Viralität_pro_X<-chbase5$Viralität_pro_X/25
+chbase5$Viralität_in_Proz<-chbase5$Viralität_in_Proz*100
 chbase5$Menschen_mit_Viruskontakt<-as.numeric(chbase5[,46][[1]])*chbase5[,25][[1]][[1]]
 
 
@@ -47,6 +48,7 @@ names(chbaseplus5)[84]<-"Viralität_pro_X_Plus"
 names(chbaseplus5)[23]<-"Dunkelziffer_Plus"
 
 chbaseplus5$Viralität_pro_X_Plus<-chbaseplus5$Viralität_pro_X_Plus/25
+chbase5$Viralität_in_Proz_Plus<-chbase5$Viralität_in_Proz_Plus*100
 chbaseplus5$Menschen_mit_Viruskontakt_Plus<-as.numeric(chbaseplus5[,46][[1]])*chbaseplus5[,25][[1]]
 
 nrow(chbaseplus5)
@@ -71,6 +73,7 @@ names(chbaseopt5)[84]<-"Viralität_pro_X_Opt"
 names(chbaseopt5)[23]<-"Dunkelziffer_Opt"
 
 chbaseopt5$Viralität_pro_X_Opt<-chbaseopt5$Viralität_pro_X_Opt/25
+chbase5$Viralität_in_Proz_Opt<-chbase5$Viralität_in_Proz_Opt*100
 chbaseopt5$Menschen_mit_Viruskontakt_Opt<-as.numeric(chbaseopt5[,46][[1]])*chbaseopt5[,25][[1]]
 
 nrow(chbaseopt5)
@@ -95,6 +98,7 @@ names(chbasepess5)[84]<-"Viralität_pro_X_Pess"
 names(chbasepess5)[23]<-"Dunkelziffer_Pess"
 
 chbasepess5$Viralität_pro_X_Pess<-chbasepess5$Viralität_pro_X_Pess/25
+chbase5$Viralität_in_Proz_Pess<-chbase5$Viralität_in_Proz_Pess*100
 chbasepess5$Menschen_mit_Viruskontakt_Pess<-as.numeric(chbasepess5[,46][[1]])*chbasepess5[,25][[1]]
 
 nrow(chbasepess5)

@@ -604,18 +604,23 @@ var yyyy = today.getFullYear();
 today = yyyy + '-' + mm + '-' + dd;
 document.getElementById('xachseende1').value=today;
 document.getElementById('xachsestart1').value="2020-09-01";
+document.getElementById('xachseende2').value=today;
+document.getElementById('xachsestart2').value="2020-09-01";
   today=addMonths(todaydate,2);
   dd = String(today.getDate()).padStart(2, '0');
 mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
 yyyy = today.getFullYear();
 today = yyyy + '-' + mm + '-' + dd;
 
-  console.log(today);
 
   document.getElementById('xachseende1').max=today;
   document.getElementById('xachsestart1').max=today;
 document.getElementById('lyachse1').value="";
 document.getElementById('ryachse1').value="";
+document.getElementById('xachseende2').max=today;
+document.getElementById('xachsestart2').max=today;
+document.getElementById('lyachse2').value="";
+document.getElementById('ryachse2').value="";
   </script>
 </body>
 

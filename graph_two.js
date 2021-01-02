@@ -109,7 +109,7 @@ values: data.map(function(d) {
     // A color scale: one color for each group
     var myColor = d3.scaleOrdinal()
       .domain(allGroup)
-      .range(d3.schemeSet2);
+      .range(d3.schemeSet3);
 
     // Add X axis --> it is a date format
     //var x = d3.scaleLinear()
@@ -123,7 +123,7 @@ values: data.map(function(d) {
   var xFormat = "%d-%b-%Y";;
   var parseTime = d3.timeParse("%Y-%m-%d");
   //x.domain(d3.extent(data, function(d) { return parseTime(d.Datum); }));
-  x.domain([parseTime(document.getElementById("xachsestart1").value),parseTime(document.getElementById("xachseende1").value)]);
+  x.domain([parseTime(document.getElementById("xachsestart2").value),parseTime(document.getElementById("xachseende2").value)]);
   var x_axis = d3.axisBottom(x).tickFormat(d3.timeFormat(xFormat)).ticks(d3.timeFormat.month, 2);
   svg.append("g")
   .attr("class", "xaxis")
@@ -158,7 +158,7 @@ values: data.map(function(d) {
 
 
       	y.domain([0,
-                  d3.max(data, function(d) { return +d.Free_Viral; })]);
+                  d3.max(data, function(d) { return +d.Viralität_pro_X; })]);
                     //allGroup.map( function(d) {
                     //console.log(d3.max(d.value.values));
                     //return d3.max(d.value.values);
@@ -182,8 +182,8 @@ values: data.map(function(d) {
     //.call(z_axis);
 
 
-     function update(inputWert,welches) {
-       x.domain([parseTime(document.getElementById("xachsestart1").value),parseTime(document.getElementById("xachseende1").value)]);
+     function update2(inputWert,welches) {
+       x.domain([parseTime(document.getElementById("xachsestart2").value),parseTime(document.getElementById("xachseende2").value)]);
        switch(welches) {
          case "lyachse":  console.log("lyachse"); y.domain([0,inputWert]);
          d3.select(".yaxis").transition().duration(1000).call(d3.axisLeft(y)); break;
@@ -738,7 +738,7 @@ values: data.map(function(d) {
                         .style('opacity', function(d) {currentOpacity = d3.selectAll("." + d.name).style("opacity");if (welches == "start") {return 0.0} else{return currentOpacity};})
 */
     }//end of update function
-    update(-1,"start");
+    update2(-1,"start");
 
     // Add a legend (interactive)
     svg
@@ -947,17 +947,17 @@ values: data.map(function(d) {
 
 
 // when the input range changes update value
-d3.select("#lyachse1").on("input", function() {
-  update(+this.value,"lyachse");
+d3.select("#lyachse2").on("input", function() {
+  update2(+this.value,"lyachse");
 });
-d3.select("#ryachse1").on("input", function() {
-  update(+this.value,"ryachse");
+d3.select("#ryachse2").on("input", function() {
+  update2(+this.value,"ryachse");
 });
-d3.select("#xachsestart1").on("input", function() {
-  update(+this.value,"xachsestart");
+d3.select("#xachsestart2").on("input", function() {
+  update2(+this.value,"xachsestart");
 });
-d3.select("#xachseende1").on("input", function() {
-  update(+this.value,"xachseende");
+d3.select("#xachseende2").on("input", function() {
+  update2(+this.value,"xachseende");
 });
 
 // update the elements
