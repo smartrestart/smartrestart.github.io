@@ -35,7 +35,53 @@
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
 </head>
+<!--
+<style>
 
+    body {
+        font: 10px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+    }
+
+    .x.axis path {
+        display: none;
+    }
+
+    .line {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 1.5px;
+    }
+
+    .overlay {
+        fill: none;
+        pointer-events: all;
+    }
+
+    .focus circle {
+        fill: steelblue;
+    }
+
+    .focus text {
+        font-size: 14px;
+    }
+
+    .tooltiphere {
+        fill: white;
+        stroke: #000;
+    }
+
+    .tooltip-date, .tooltip-likes {
+        font-weight: bold;
+    }
+
+</style>-->
 <link href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" rel="stylesheet"/>
 <script src="https://d3js.org/d3.v4.js"></script>
 <script src="https://d3js.org/d3-time.v2.min.js"></script>
@@ -59,10 +105,11 @@
       <nav class="nav-menu d-none d-lg-block">
         <ul>
           <li class="active"><a href="index.html">Home</a></li>
-          <li><a href="#intro">Intro</a></li>
-          <li><a href="#daten">Daten</a></li>
+          <li><a href="#value_infectious">Value Infectious</a></li>
+          <li><a href="#viralitaet">Viralität</a></li>
+          <li><a href="#dunkelziffer">Dunkelziffer</a></li>
 
-          <li><a href="#methodologie">Methodologie</a></li>
+          <li><a href="#methodologie">Modellierung</a></li>
           <li><a href="#contact">Kontakt</a></li>
 
         </ul>
@@ -88,7 +135,7 @@
   <main id="main">
 
       <!-- ======= Services Section ======= -->
-      <section id="intro" class="services section-bg">
+      <section id="value_infectious" class="services section-bg">
         <div class="container" data-aos="fade-up">
 
           <div class="section-title">
@@ -111,7 +158,8 @@
         <tr><td><input type="text" id="lyachse1" name="lyachse1"></td><td>
         <input type="text" id="ryachse1" name="ryachse1"></td><td>
         <input type="date" id="xachsestart1" name="xachsestart1" value="2020-09-01" min="2020-03-04" max="2021-03-01" ></td><td>
-        <input type="date" id="xachseende1" name="xachseende1" value=enddate min="2020-03-04" max="2021-03-01" </td></tr></tbody></table>
+        <input type="date" id="xachseende1" name="xachseende1" value=enddate min="2020-03-04" max="2021-03-01" </td>
+      </tr></tbody></table>
 
 
             </div></div>
@@ -123,7 +171,7 @@
       </section><!-- End Sevices Section -->
 
     <!-- ======= About Section ======= -->
-    <section id="daten" class="about">
+    <section id="viralitaet" class="about">
       <div class="container" data-aos="fade-up">
 
         <div class="section-title">
@@ -156,7 +204,7 @@
     </section><!-- End About Section -->
 
     <!-- ======= Services Section ======= -->
-    <section id="Dunkelziffer" class="services section-bg">
+    <section id="dunkelziffer" class="services section-bg">
       <div class="container" data-aos="fade-up">
 
         <div class="section-title">
@@ -197,31 +245,31 @@
           <h3>Kurzbeschreibung
           Modellierung Covid-19 (Version 1.0 - 15.11.20)</h3>
 
-            <p style="margin-bottom: 0in; line-height: 100%">von Martin Bäumle,
+            <p >von Martin Bäumle,
             Nationalrat &amp; Atmosphärenwissenschaftler</p></div>
           <div class="row content">
 
 
-<p style="margin-bottom: 0in; line-height: 100%"><br/>
+<p ><br/>
 
 
 </p>
-<p style="margin-bottom: 0in; line-height: 100%"><br/>
+<p ><br/>
 
 </p>
-<p style="margin-bottom: 0in; line-height: 100%"><b>Ausgangslage</b></p>
-<p style="margin-bottom: 0in; line-height: 100%">Bereits im März
+<h4><b>Ausgangslage</b></h4>
+<p >Bereits im März
 habe ich ein erstes Modell entworfen, um die Entwicklung der ersten
 Welle zu verfolgen und dabei eine Prognose für einen «smart
 restart» und das Verhindern einer zweiten Welle zu modellieren. Dazu
-habe ich auch ein Konzept verfasst und dieses damals publiziert
-<a href="https://martin-baeumle.ch/article/4089/smartrestart---schutzmassnahmenpaket-fur-die-gesundheit-und-wirtschaft-der-schweiz">https://martin-baeumle.ch/article/4089/smartrestart---schutzmassnahmenpaket-fur-die-gesundheit-und-wirtschaft-der-schweiz</a>.
-Dieses Konzept ist im Kern immer noch gültig, aber dank vielen neuen
+habe ich auch ein Konzept verfasst und dieses damals
+<a href="https://martin-baeumle.ch/article/4089/smartrestart---schutzmassnahmenpaket-fur-die-gesundheit-und-wirtschaft-der-schweiz">publiziert</a>.</p>
+<p>Dieses Konzept ist im Kern immer noch gültig, aber dank vielen neuen
 Erkenntnissen können einige Punkte vereinfacht und präziser
 gestaltet werden. Ein schriftliches Update wurde bisher nicht
 gemacht, aber die neuen Erkenntnisse aus der Pandemie flossen in mein
 Modell ein.</p>
-<p style="margin-bottom: 0in; line-height: 100%">In den folgenden
+<p >In den folgenden
 Monaten habe ich so das Modell verfeinert und um zwei wesentliche
 Parameter ergänzt. Dabei stellte sich vorgängig mir die Frage,
 welche Parameter für die Verfolgung und Prognose der Pandemie am
@@ -233,25 +281,25 @@ schien mir wesentlicher als viele andere Parameter. Aus diesem Faktor
 kann man auch die aktuelle Lage, das Verfeinern von Massnahmen und
 das aktuelle statistische Risiko einer Ansteckung abzuschätzen.
 Hingegen war die Modellierung nicht ganz einfach zu bewerkstelligen.</p>
-<p style="margin-bottom: 0in; line-height: 100%">Als zweiten Wert
+<p >Als zweiten Wert
 habe ich so den «value infectous» entwickelt, der als nach- und
 vorauslaufender Indikator die Entwicklung beschreiben kann. Dieser
 beschreibt gut, ob die Pandemie eher am Entgleisen oder eher unter
 Kontrolle ist. Zudem kann man damit nachträglich andere Verläufe
 simulieren oder in die Zukunft Prognosen insbesondere der Fallzahlen
 – aber auch der Todesfälle - machen.</p>
-<p style="margin-bottom: 0in; line-height: 100%">Die Viralität in
+<p >Die Viralität in
 der Bevölkerung und der «value infectous» als Indikatoren, welche
 die Situation der Pandemie beschreiben und in Varianten a) in die
 Zukunft rechnen lässt und b) auch die Vergangenheit abbilden kann
 bzw. andere Szenarien rechnen kann. Dies kann auf andere Länder oder
 Kantone übertragen werden. Je kleiner das Gebiet, desto weniger gute
 Aussagen sind möglich.</p>
-<p style="margin-bottom: 0in; line-height: 100%">Dieses Modell wird
+<p >Dieses Modell wird
 nun fast täglich mit den aktuellen Daten gefüttert und so die
 Entwicklung fast real time beobachtet und in die Zukunft
 prognostiziert.</p>
-<p style="margin-bottom: 0in; line-height: 100%">Ich habe aber
+<p >Ich habe aber
 bereits früh erkennen müssen, dass eine Modellierung aus den oder
 der Todesfällen bedingt oder aus den oder der Spitaleinweisungen
 kaum möglich ist und keine zuverlässigen Daten ergeben kann. Ich
@@ -259,7 +307,7 @@ musste dies in der ersten Welle feststellen: Meine Prognose der Toten
 war zu tief und die Belegung der Spitalbetten erratisch. Hingegen die
 Prognose der Fallzahlen war ziemlich gut und wurde gegen Ende der
 Welle immer genauer.</p>
-<p style="margin-bottom: 0in; line-height: 100%">Hingegen kann mein
+<p >Hingegen kann mein
 Modell heute eine Prognose für die Toten grundsätzlich modellieren
 (in die Zukunft mit einer Bandbreite Faktor rund 3, nachträglich
 aber recht genau). Aber was ich als kaum möglich betrachte ist die
@@ -268,24 +316,16 @@ eines Faktors 3 oder mehr niemals als zuverlässige Steuer-Grösse
 erscheinen kann – man liegt da fast immer falsch. Und damit ist ein
 Fokussierung auf diesen Parameter meiner Ansicht kaum möglich,
 falsch und zum Scheitern verurteilt.</p>
-<p style="margin-bottom: 0in; line-height: 100%"><br/>
 
-</p>
-<p style="margin-bottom: 0in; line-height: 100%"><br/>
-
-</p>
-<p style="margin-bottom: 0in; line-height: 100%"><br/>
-
-</p>
-<p style="margin-bottom: 0in; line-height: 100%"><b>Grundlagen:</b></p>
-<p style="margin-bottom: 0in; line-height: 100%">Das Modell ist ein
+<h4 ><b>Grundlagen:</b></h4>
+<p >Das Modell ist ein
 rein statistisches Modell und berechnet keine Wirkung einzelner
 Massnahmen, unterscheidet auch nicht zwischen «Spreadern» und
 «wenig Ansteckenden», sondern berechnet die statistischen Resultate
 der Summe der Massnahmen. Man kennt aber heute die Risiken der
 Übertragungen besser und man kann dadurch mit «chrirurgischen»
 Eingriffen gezielt Ansteckungsherde reduzieren.</p>
-<p style="margin-bottom: 0in; line-height: 100%">Als bekannte Grösse
+<p >Als bekannte Grösse
 wird die Zahl der positiv getesteten ins Excel-Modell gefüttert –
 die Todesfälle werden zwar erfasst, aber nicht für die Modellierung
 berücksichtigt . Die anderen Faktoren beruhen auf Annahmen, welche
@@ -294,13 +334,13 @@ herausgerechnet wurden. In die Zukunft sind immer auch Schätzungen
 nötig, da die Zukunft grundsätzlich nicht bekannt ist. Darum rechne
 ich immer in Szenarien.
 </p>
-<p style="margin-bottom: 0in; line-height: 100%"><br/>
+<p ><br/>
 
 </p>
-<p style="margin-bottom: 0in; line-height: 100%"><b>Parameter
+<h4 ><b>Parameter
 Dunkelziffer: </b>
-</p>
-<p style="margin-bottom: 0in; line-height: 100%">Die Dunkelziffer ist
+</h4>
+<p >Die Dunkelziffer ist
 seit Beginn der Pandemie eine der wesentlichsten und umstrittensten
 Grössen, welche für eine gute Kontrolle über die Pandemie zwingend
 wäre. Trotz der Wichtigkeit wurde diese nie sauber berechnet oder
@@ -313,7 +353,7 @@ an der serologischen Studie von Adriano Aguzzi abgeglichen. Aus
 diesen Daten konnte ich eine DZ bist März/April/Mai von 3-5
 abschätzen (für den Kanton Zürich). In der Romandie dürfte der
 Wert (Bandbreite) eher höher liegen, in der Ostschweiz eher tiefer.</p>
-<p style="margin-bottom: 0in; line-height: 100%">Dabei rechnete ich
+<p >Dabei rechnete ich
 mit Annahmen, wie lange das Virus mit einem PCR-Test nachweisbar
 bleibt (mit Bandbreiten) konnte ich für verschiedene der Studien
 eine Dunkelziffer herausrechnen. Diese ergab Werte von 3 – 4 aus
@@ -321,7 +361,7 @@ den diversen Studien. Mit der DZ 5 für die Schweiz gehe ich davon
 aus, dass ich in der ersten Welle vernünftige Annahmen getroffen
 habe. Ich konnte das Modell auch am Beispiel Slowakei (Reihentest
 anfangs November) erneut validieren.</p>
-<p style="margin-bottom: 0in; line-height: 100%">Grundsätzlich gehe
+<p >Grundsätzlich gehe
 ich im Modell davon aus, dass die Dunkelziffer sich über die Zeit
 dynamisch entwickelt hat und auch weiter dynamisch bleibt. Meine
 Annahme für die erste Welle (im Mittel) ist eine Dunkelziffer von
@@ -338,15 +378,15 @@ Testen) auch der symptomlosen Fälle. Nachweislich sind mindestens
 50% symptomlos bzw. deutlich asymptomatisch und werden so bis heute
 kaum bis nicht erfasst.
 </p>
-<p style="margin-bottom: 0in; line-height: 100%"><br/>
+<p ><br/>
 
 </p>
-<p style="margin-bottom: 0in; line-height: 100%"><br/>
+<p ><br/>
 
 </p>
-<p style="margin-bottom: 0in; line-height: 100%"><b>Parameter
-Viralität (Hauptindikator):</b></p>
-<p style="margin-bottom: 0in; line-height: 100%">Grundannahme ist
+<h4 ><b>Parameter
+Viralität (Hauptindikator):</b></h4>
+<p >Grundannahme ist
 eine mittlere Inkubationszeit von 6 Tagen bis zum Auftreten von
 Symptomen bzw. bis zum «symptomlosen Ausbruch». Zudem gehe ich
 davon aus, dass eine Person 2 Tage nach Ansteckung (bzw. 4 Tage vor
@@ -356,18 +396,18 @@ ermöglicht. Zudem gehe ich davon aus, dass eine Person bis 7 Tage
 11 Tagen, in der statistisch eine Person ansteckend ist (Quelle *1).
 Ich habe das zu Beginn (vor der Studie *1) von 7-8 bis 13 Tage
 berechnet und das verändert die Werte nicht wesentlich.</p>
-<p style="margin-bottom: 0in; line-height: 100%">Nun werden die
+<p >Nun werden die
 bekannten positiven Fälle statistisch zurückgerechnet auf den Tag
 der Ansteckung mit der Dunkelziffer des Tages und aufsummiert. Dabei
 wird aber jeweils die Anzahl Personen wieder reduziert, welche
 mutmasslich nicht mehr viral sind.</p>
-<p style="margin-bottom: 0in; line-height: 100%">Von dieser
+<p >Von dieser
 potenziellen «Brutto-Viralität» werden die Anzahl «positiv
 gefundenen» und eine Anzahl der geschätzten «Viralen in der
 Quarantäne» abgezogen, um die «freie Viralität» netto zu
 erhalten. Hier gibt es natürlicherweise Unsicherheiten – v.a. bei
 so hohen Werten wie in der aktuellen 2. Welle.</p>
-<p style="margin-bottom: 0in; line-height: 100%">Die Daten für die
+<p >Die Daten für die
 Isolation und Quarantäne werden jeweils mit den sporadisch
 gemeldeten Zahlen in Abgleich gesetzt, um die Berechnung
 abzugleichen. Dabei ist v.a. die «offizielle» Zahl in Quarantäne
@@ -378,19 +418,19 @@ publiziert werden. Da aber nur wenige in Quarantäne später auch
 positiv getestet werden, wird dieser Wert/Anteil eher vorsichtig
 geschätzt.
 </p>
-<p style="margin-bottom: 0in; line-height: 100%"><br/>
+<p ><br/>
 
 </p>
-<p style="margin-bottom: 0in; line-height: 100%"><b>Parameter «value
-infectous»:</b></p>
-<p style="margin-bottom: 0in; line-height: 100%">Als zusätzlichen
+<h4 ><b>Parameter «value
+infectous»:</b></h4>
+<p >Als zusätzlichen
 Indikator für die Modellierung der Pandemie habe ich einen «value
 infectous» definiert, welcher eine Aussage über die Ansteckungsrate
 geben soll und damit auch die Wirkung von Massnahmen, Klima, Wetter
 usw. zeigen soll. Dieser kann rückwirkend beobachtet werden und so
 eine Aussage und Indizien geben, wie sich die Pandemie entwickelt hat
 oder sich entwickeln könnte.</p>
-<p style="margin-bottom: 0in; line-height: 100%">Dieser Wert wird
+<p >Dieser Wert wird
 rückwärts aus den effektiv gefundenen positiven Fällen unter
 Einbezug der Dunkelziffer im Verhältnis zur berechneten «Viralität»
 gesetzt. Dieser Parameter reagiert sehr empfindlich und schnell auf
@@ -399,17 +439,17 @@ Wert jeweils auf 3 Tage gemittelt. Mit dem Setzen des Wertes in die
 Zukunft können nun die Fallzahlen und die «Viralität» in die
 Zukunft modelliert werden – dies eben in Varianten mit
 verschiedenen Annahmen u.a. der DZ.</p>
-<p style="margin-bottom: 0in; line-height: 100%"><br/>
+<p ><br/>
 
 </p>
-<p style="margin-bottom: 0in; line-height: 100%"><b>Resultate:</b></p>
-<p style="margin-bottom: 0in; line-height: 100%">Aufgrund der
+<h4 ><b>Resultate:</b></h4>
+<p >Aufgrund der
 Modellrechnungen konnte man bereits den ganzen Sommer ein leicht
 exponentielles Wachstum der Viralität ablesen, während der» value
 infectous» praktisch konstant (zu) hoch war und diese trotz
 optimalen Bedingungen im Sommer zur möglichen «Kontrolle» des
 Virus.</p>
-<p style="margin-bottom: 0in; line-height: 100%">Es war damals schon
+<p >Es war damals schon
 klar, dass nur eine leichte Erhöhung des «value infectous» durch
 Spreader-ereignisse,  einen Kälteeinbruch (und dann die Kombination)
 zu einem starken Wachstum der Fallzahlen führen würde und je nach
@@ -419,7 +459,7 @@ für mich dramatischer als noch Mitte September befürchtet bzw. ich
 wollte damals bewusst nicht auf Panik machen und kein
 worst-worst-case aufzeigen, sondern darauf hinweisen, dass man jetzt
 rasch handeln muss.</p>
-<p style="margin-bottom: 0in; line-height: 100%">Die Reaktion auf die
+<p >Die Reaktion auf die
 2. Welle mit raschem Anstieg der Fallzahlen führte rasch zu
 Verhaltensänderungen bei einem Teil der Leute (Eigenverantwortung),
 dann zu Massnahmen in Kantonen und dann beim Bund. Dies zeigte dann
@@ -428,7 +468,7 @@ schon im «value infectous» früh eine kontinuierliche Absenkung an
 Bremsen der 2. Welle. Der Höhepunkt wurde im Basisszenario etwas
 früher (3-5 Tage) und bei tieferen Fallzahlen (max. 8’000)
 erwartet, bleibt aber bisher im Rahmen der Annahmen.</p>
-<p style="margin-bottom: 0in; line-height: 100%">Aktuell befinden wir
+<p >Aktuell befinden wir
 uns in einer sehr fragilen Phase - der Absenkpfad des «value
 infectous» wird seit ca. 6.11. langsamer und könnte bereits nächste
 Woche und damit zu früh stoppen. Daher sind nun mehrere
@@ -439,12 +479,12 @@ Entspannung bis zu einem «steady-state» auf (zu) hohem Niveau der
 Viralität mit laufendem Risiko eines erneuten Anstiegs der Fälle.
 Von einem Aufflammen möchte ich jetzt nicht sprechen, aber auch das
 ist leider nicht auszuschliessen.</p>
-<p style="margin-bottom: 0in; line-height: 100%"><br/>
+<p ><br/>
 
 </p>
-<p style="margin-bottom: 0in; line-height: 100%"><b>Aktuelle
-Einschätzung der Lage in Szenarien (Samstag 14.11.20 Abend):</b></p>
-<p style="margin-bottom: 0in; line-height: 100%">Szenario Basis:
+<h4 ><b>Aktuelle
+Einschätzung der Lage in Szenarien (Samstag 14.11.20 Abend):</b></h4>
+<p >Szenario Basis:
 Viralitätsfaktor sinkt noch etwas ab, CT greift wieder und senkt DZ
 unter 2 (nur mit backward-Trajektorien möglich)&nbsp; – damit
 könnten wir bis ca. Weihnachten die Viralität markant auf
@@ -453,19 +493,19 @@ kontrollierbarere Werte senken und die Fallzahlen in einem Monat (ca.
 alles extrem fragil und kaum Reserven… weitere gezielte Massnahmen
 wie die TF vorschlägt wären mehr als angezeigt… und es braucht
 massiv mehr Tests und schnelleres Handeln…</p>
-<p style="margin-bottom: 0in; line-height: 100%">Graphik Sz. base:</p>
-<p style="margin-bottom: 0in; line-height: 100%"><img src="attempt_html_5dc0462ac5c6f27a.png" name="Grafik 3" align="bottom" width="605" height="258" border="0"/>
+<p >Graphik Sz. base:</p>
+<p ><img src="img/attempt_html_5dc0462ac5c6f27a.png" name="Grafik 3" align="bottom" width="605" height="258" border="0"/>
 </p>
-<p style="margin-bottom: 0in; line-height: 100%"><br/>
+<p ><br/>
 
 </p>
-<p style="margin-bottom: 0in; line-height: 100%"><br/>
+<p ><br/>
 
 </p>
-<p style="margin-bottom: 0in; line-height: 100%"><br/>
+<p ><br/>
 
 </p>
-<p style="margin-bottom: 0in; line-height: 100%">Sz. optimistisch:
+<p >Sz. optimistisch:
 Viralitätsfaktor sinkt noch deutlich ab, CT greift flächig wieder
 und senkt DZ auf max. 1.5 (nur mit backward-Trajektorien bis 7 Tage
 möglich) - Damit schaffen wir es bis ca. 10.12. auf tragbare Werte
@@ -477,14 +517,14 @@ wir viel schneller werden und die Tests viel intensiver machen –
 auch Symptomlose und eben bis 7 Tage zurück… und nicht locker
 lassen bei den Massnahmen und gezielt etwas nachfassen… das wird
 aber mit der aktuellen Führung der Pandemie schwierig…</p>
-<p style="margin-bottom: 0in; line-height: 100%"><a name="_GoBack"></a>
+<p ><a name="_GoBack"></a>
 Graphik Sz. opt.:</p>
-<p style="margin-bottom: 0in; line-height: 100%"><img src="attempt_html_4a11f26c00e9b1fd.png" name="Grafik 2" align="bottom" width="605" height="257" border="0"/>
+<p ><img src="img/attempt_html_4a11f26c00e9b1fd.png" name="Grafik 2" align="bottom" width="605" height="257" border="0"/>
 </p>
-<p style="margin-bottom: 0in; line-height: 100%"><br/>
+<p ><br/>
 
 </p>
-<p style="margin-bottom: 0in; line-height: 100%">Szenario
+<p >Szenario
 pessimistischer: Viralitätsfaktor sinkt ab nächster Wochen nicht
 mehr ab und die Massnahmen waren unzureichend und zu spät. CT greift
 zwar wieder etwas besser und senkt DZ langsam unter 3 (zu wenig) –
@@ -496,41 +536,40 @@ ca. 30’000/d). Dann befinden wir uns (faktisch) in der Mitigation
 «Lockdown» und/oder ein wiederholtes Durchtesten der Bevölkerung
 (nach dem Muster Slowakei) hilft uns da wieder heraus… ich hoffe,
 dass ich dieses Szenario bald als zu pessimistisch verwerfen kann…</p>
-<p style="margin-bottom: 0in; line-height: 100%">Graphik Sz. pess.:</p>
-<p style="margin-bottom: 0in; line-height: 100%"><img src="attempt_html_379c8b4d4947b936.png" name="Grafik 4" align="bottom" width="605" height="257" border="0"/>
+<p >Graphik Sz. pess.:
+<img src="img/attempt_html_379c8b4d4947b936.png" name="Grafik 4" align="bottom" width="605" height="257" border="0"/>
 </p>
-<p style="margin-bottom: 0in; line-height: 100%"><br/>
-
-</p>
-<p style="margin-bottom: 0in; line-height: 100%">Fazit: Natürlich
+</div>
+<div class="row content">
+<h4><b>Fazit:</b></h4>
+<p> Natürlich
 wird die Realität je nach Verhalten und Massnahmen zwischen den
 Szenarien liegen… und wir haben es noch in den Händen… aber es
 ist eng…</p>
-<p style="margin-bottom: 0in; line-height: 100%"><br/>
+<p ><br/>
 
-</p>
-<p style="margin-bottom: 0in; line-height: 100%">Martin Bäumle,
+</p><br>
+<p >Martin Bäumle,
 Dübendorf, 15.11.2020</p>
-<p style="margin-bottom: 0in; line-height: 100%"><br/>
+<p ><br/>
 
-</p>
-<p style="margin-bottom: 0in; line-height: 100%"><span lang="en-US">Quellen:</span></p>
-<p style="margin-bottom: 0in; line-height: 100%"><span lang="en-US">*1:
-Temporal dynamics in viral shedding and transmissibility of COVID-19</span></p>
-<p style="margin-bottom: 0in; line-height: 100%"><span lang="en-US">Xi
+</p><br>
+</div><div class="row content">
+<h4><b>Quellen:</b></h4><br/>
+<p>*1:
+Temporal dynamics in viral shedding and transmissibility of COVID-19</p>
+<p >Xi
 He1,3, Eric H. Y. Lau 2,3, Peng Wu2, Xilong Deng1, Jian Wang1, Xinxin
-Hao2, Yiu Chung Lau2,</span></p>
-<p style="margin-bottom: 0in; line-height: 100%"><span lang="en-US">Jessica
+Hao2, Yiu Chung Lau2,</p>
+<p >Jessica
 Y. Wong2, Yujuan Guan1, Xinghua Tan1, Xiaoneng Mo1, Yanqing Chen1,
-Baolin Liao1,</span></p>
-<p style="margin-bottom: 0in; line-height: 100%"><span lang="en-US">Weilie
+Baolin Liao1,</p>
+<p >Weilie
 Chen1, Fengyu Hu1, Qing Zhang1, Mingqiu Zhong1, Yanrong Wu1, Lingzhai
-Zhao1,</span></p>
-<p style="margin-bottom: 0in; line-height: 100%">Fuchun Zhang1,
+Zhao1,</p>
+<p >Fuchun Zhang1,
 Benjamin J. Cowling 2,4, Fang Li1,4 and Gabriel M. Leung 2,4</p>
-<p style="margin-bottom: 0in; line-height: 100%"><br/>
 
-</p>
 
 
         </div>

@@ -137,6 +137,7 @@ values: data.map(function(d) {
 
 
 
+
     // Add Y axis
     var y = d3.scaleLinear()
       //.domain( [0,20000])
@@ -796,6 +797,101 @@ u
       .style("fill", "black")
 
 
+    //   var g = svg.append("g")
+    // .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    //
+    //   var focus = g.append("g")
+    //           .attr("class", "focus")
+    //           .style("display", "none");
+    //
+    //       focus.append("line")
+    //           .attr("class", "x-hover-line hover-line")
+    //           .attr("y1", 0)
+    //           .attr("y2", height);
+    //
+    //       focus.append("line")
+    //           .attr("class", "y-hover-line hover-line")
+    //           .attr("x1", width)
+    //           .attr("x2", width);
+    //
+    //       focus.append("circle")
+    //           .attr("r", 7.5);
+    //
+    //       focus.append("text")
+    //           .attr("x", 15)
+    //         	.attr("dy", ".31em");
+    //
+    //       svg.append("rect")
+    //           .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    //           .attr("class", "overlay")
+    //           .attr("width", width)
+    //           .attr("height", height)
+    //           .on("mouseover", function() { focus.style("display", null); })
+    //           .on("mouseout", function() { focus.style("display", "none"); })
+    //           .on("mousemove", mousemove);
+
+ //              var  bisectDate = d3.bisector(function(d) { return parseTime(d.Datum); }).left;
+ // 
+ //
+ //
+ //          var focus = svg.append("g")
+ //            .attr("class", "focus")
+ //
+ //        focus.append("circle")
+ //            .attr("r", 5);
+ //
+ //            focus.append("rect")
+ //                .attr("class", "tooltiphere")
+ //                .attr("width", 100)
+ //                .attr("height", 50)
+ //                .attr("x", 10)
+ //                .attr("y", -22)
+ //                .attr("rx", 4)
+ //                .attr("ry", 4)
+ //
+ //                .style("stroke","black");
+ //
+ //        focus.append("text")
+ //            .attr("class", "tooltip-date")
+ //            .attr("x", 18)
+ //            .attr("y", -2);
+ //
+ //        focus.append("text")
+ //            .attr("x", 18)
+ //            .attr("y", 18)
+ //            .text("");
+ //
+ //        focus.append("text")
+ //            .attr("class", "tooltip-likes")
+ //            .attr("x", 60)
+ //            .attr("y", 18);
+ //
+ //        svg.append("rect")
+ //            .attr("class", "overlay")
+ //            .attr("width", width)
+ //            .attr("height", height)
+ //            .on("mouseover", function() { focus.style("display", null); })
+ //            .on("mouseout", function() { focus.style("display", "none"); })
+ //            .on("mousemove", mousemove);
+ //
+ // var formatValue = d3.format(",");
+ //
+ //        function mousemove() {
+ //            var x0 = x.invert(d3.mouse(this)[0]),
+ //                i = bisectDate(data, x0, 1),
+ //                d0 = data[i - 1],
+ //                d1 = data[i],
+ //                d = x0 - d0.Datum > d1.Datum - x0 ? d1 : d0;
+ //                console.log(document.getElementById("tooltip1").value);
+ //            focus.attr("transform", "translate(" + x(parseTime(d.Datum)) + "," + y(d[document.getElementById("tooltip1").value]) + ")");
+ //            focus.select(".tooltip-date").text(d.Datum);
+ //            focus.select(".tooltip-likes").text(formatValue(Math.round(d[document.getElementById("tooltip1").value])));
+ //
+ //        }
+
+
+
+
     }//end of update function
     update(-1,"start");
 
@@ -1045,6 +1141,7 @@ d3.select("#xachseende1").on("input", function() {
  //              .attr("stroke", function(d){ return myColor(d.name) })
  //              .style("stroke-width", 2)
  //              .style("fill", "none")
+
 
 
 
