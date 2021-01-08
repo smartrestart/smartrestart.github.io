@@ -91,6 +91,7 @@
 <script src="graph_one.js"></script>
 <script src="graph_two.js"></script>
 <script src="graph_three.js"></script>
+<script src="graph_four.js"></script>
 
 <body>
 
@@ -105,6 +106,7 @@
       <nav class="nav-menu d-none d-lg-block">
         <ul>
           <li class="active"><a href="index.html">Home</a></li>
+          <li><a href="#lagebeurteilung">Aktuelle Lageeinschätzung</a></li>
           <li><a href="#value_infectious">Value Infectious</a></li>
           <li><a href="#viralitaet">Viralität</a></li>
           <li><a href="#dunkelziffer">Dunkelziffer</a></li>
@@ -134,8 +136,20 @@
 
   <main id="main">
 
+    <!-- ======= About Section ======= -->
+    <section id="lagebeurteilung" class="services section-bg">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+          <h2>Lagebeurteilung</h2>
+
+          <div class="row content" id="fieldtext1" contenteditable="true"></div>
+
+      </div>
+    </section><!-- End About Section -->
+
       <!-- ======= Services Section ======= -->
-      <section id="value_infectious" class="services section-bg">
+      <section id="value_infectious" class="about">
         <div class="container" data-aos="fade-up">
 
           <div class="section-title">
@@ -164,7 +178,7 @@
 
             </div></div>
 
-            <div class="row content" id="fieldtext1"></div>
+            <div class="row content" id="fieldtext2" contenteditable="true"></div>
 
 
 
@@ -174,7 +188,7 @@
       </section><!-- End Sevices Section -->
 
     <!-- ======= About Section ======= -->
-    <section id="viralitaet" class="about">
+    <section id="viralitaet" class="services section-bg">
       <div class="container" data-aos="fade-up">
 
         <div class="section-title">
@@ -203,13 +217,13 @@
 
           </div></div>
 
-          <div class="row content" id="fieldtext2"></div>
+          <div class="row content" id="fieldtext3" contenteditable="true"></div>
 
       </div>
     </section><!-- End About Section -->
 
     <!-- ======= Services Section ======= -->
-    <section id="dunkelziffer" class="services section-bg">
+    <section id="dunkelziffer" class="about">
       <div class="container" data-aos="fade-up">
 
         <div class="section-title">
@@ -236,15 +250,47 @@
 
           </div></div>
 
-          <div class="row content" id="fieldtext3"></div>
+          <div class="row content" id="fieldtext4" contenteditable="true"></div>
 
 
       </div>
     </section><!-- End Sevices Section -->
 
+    <!-- ======= Services Section ======= -->
+    <section id="viruskontakt" class="services section-bg">
+      <div class="container" data-aos="fade-up">
 
+        <div class="section-title">
+          <h2>Menschen mit Viruskontakt</h2>
+          <p>Die folgende Grafik zeigt den Verlauf der geschätzten Menschen mit Viruskontakt an. (<a href="https://smartrestartch.s3.eu-central-1.amazonaws.com/data.csv">Rohdaten hier</a>)</p>
+        </div>
+
+        <div class="row content">
+          <div class="col-lg-12 d-flex justify-content-center">
+
+          <div id="my_dataviz4"></div>
+          </div>
+          </div>
+
+      <div class="row content"><div class="col-lg-12 d-flex justify-content-center">
+
+
+      <table class="table table-sm"><tbody><tr><td><label for="lyachse4">Max. linke y-Achse :</label></td><td>
+      <label for="xachsestart4">Startdatum:</label></td><td><label for="xachseende4">Enddatum:</label></td></tr>
+      <tr><td><input type="text" id="lyachse4" name="lyachse4"></td><td>
+      <input type="date" id="xachsestart4" name="xachsestart4" value="2020-09-01" min="2020-03-04" max="2021-03-01" ></td><td>
+      <input type="date" id="xachseende4" name="xachseende4" value=enddate min="2020-03-04" max="2021-03-01" </td></tr></tbody></table>
+
+
+          </div></div>
+
+          <div class="row content" id="fieldtext5" contenteditable="true"></div>
+
+
+      </div>
+    </section><!-- End Sevices Section -->
     <!-- ======= Cta Section ======= -->
-    <section id="methodologie" class="cta">
+    <section id="methodologie" class="about">
       <div class="container" data-aos="zoom-in">
 <div class="text-center">
           <h3>Kurzbeschreibung
@@ -608,6 +654,8 @@ document.getElementById('xachseende2').value=today;
 document.getElementById('xachsestart2').value="2020-09-01";
 document.getElementById('xachseende3').value=today;
 document.getElementById('xachsestart3').value="2020-09-01";
+document.getElementById('xachseende4').value=today;
+document.getElementById('xachsestart4').value="2020-09-01";
   today=addMonths(todaydate,2);
   dd = String(today.getDate()).padStart(2, '0');
 mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -626,6 +674,9 @@ document.getElementById('ryachse2').value="";
 document.getElementById('xachseende3').max=today;
 document.getElementById('xachsestart3').max=today;
 document.getElementById('lyachse3').value="";
+document.getElementById('xachseende4').max=today;
+document.getElementById('xachsestart4').max=today;
+document.getElementById('lyachse4').value="";
 
 async function loadFileAndPrintToConsole(url,fieldname) {
   try {
@@ -642,6 +693,8 @@ async function loadFileAndPrintToConsole(url,fieldname) {
 loadFileAndPrintToConsole('https://smartrestartch.s3.eu-central-1.amazonaws.com/text1.txt','fieldtext1');
 loadFileAndPrintToConsole('https://smartrestartch.s3.eu-central-1.amazonaws.com/text2.txt','fieldtext2');
 loadFileAndPrintToConsole('https://smartrestartch.s3.eu-central-1.amazonaws.com/text3.txt','fieldtext3');
+loadFileAndPrintToConsole('https://smartrestartch.s3.eu-central-1.amazonaws.com/text4.txt','fieldtext4');
+loadFileAndPrintToConsole('https://smartrestartch.s3.eu-central-1.amazonaws.com/text5.txt','fieldtext5');
 
   </script>
 </body>
