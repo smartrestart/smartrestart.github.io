@@ -113,7 +113,7 @@ var calc_ymax= d3.format(".1f")(d3.max(data, function(d) { return +(d.Menschen_m
         document.getElementById("lyachse4").value=calc_ymax;
 
 
-                  var yAxis = d3.axisLeft(y);
+                  var yAxis = d3.axisLeft(y).tickFormat(d => d + "%");
                   //var yAxis = d3.axis()
       //.orient("left")
       //.scale(y);
@@ -132,7 +132,7 @@ var calc_ymax= d3.format(".1f")(d3.max(data, function(d) { return +(d.Menschen_m
        x.domain([parseTime(document.getElementById("xachsestart4").value),parseTime(document.getElementById("xachseende4").value)]);
        switch(welches) {
          case "lyachse":  console.log("lyachse"); y.domain([0,inputWert]);
-         d3.select(".yaxis4").transition().duration(1000).call(d3.axisLeft(y)); break;
+         d3.select(".yaxis4").transition().duration(1000).call(d3.axisLeft(y).tickFormat(d => d + "%")); break;
          case "xachsestart":
          d3.select(".xaxis4").transition().duration(1000).call(d3.axisBottom(x).tickFormat(d3.timeFormat(xFormat)).ticks(d3.timeFormat.month, 2)); break;
          case "xachseende":
