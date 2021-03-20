@@ -146,7 +146,10 @@ values: data.map(function(d) {
 
 
 
-      var calc_zmax= d3.format(".1f")(d3.max(data, function(d) { return +d.Geimpfte; }));
+      var calc_zmax= d3.format(".1f")(d3.max(data, function(d) {
+      //inserted an improved visualization of the maximum
+        if(parseTime(d.Datum)<parseTime(today)){
+        return +d.Geimpfte; }}));
       var z = d3.scaleLinear()
         .domain( [0,calc_zmax])
         .range([ height, 0 ]);
