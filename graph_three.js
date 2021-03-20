@@ -22,6 +22,7 @@ d3.csv("https://smartrestartch.s3.eu-central-1.amazonaws.com/lastupdate.csv", fu
 d3.csv("https://smartrestartch.s3.eu-central-1.amazonaws.com/data.csv", function(data) {
     // List of groups (here I have one group per column)
     var allGroup = ["Dunkelziffer"];
+    var secondGroup = ["Geimpfte"];
 
     // Reformat the data: we need an array of arrays of {x, y} tuples
     var dataReady = allGroup.map( function(grpName) { // .map allows to do something for each element of the list
@@ -32,13 +33,29 @@ d3.csv("https://smartrestartch.s3.eu-central-1.amazonaws.com/data.csv", function
         })
       };
     });
-    console.log(dataReady);
+    var dataReady2 = secondGroup.map( function(grpName) { // .map allows to do something for each element of the list
+      return {
+        name: grpName,
+        values: data.map(function(d) {
+          return {time: d.Datum, value: +d[grpName]};
+        })
+      };
+    });
 
         // List of groups (here I have one group per column)
         var allGroupPlus = ["Dunkelziffer_Plus"];
+        var secondGroupPlus = ["Geimpfte_Plus"];
 
         // Reformat the data: we need an array of arrays of {x, y} tuples
         var dataReadyPlus = allGroupPlus.map( function(grpName) { // .map allows to do something for each element of the list
+          return {
+            name: grpName,
+            values: data.map(function(d) {
+              return {time: d.Datum, value: +d[grpName]};
+            })
+          };
+        });
+        var dataReady2Plus = secondGroupPlus.map( function(grpName) { // .map allows to do something for each element of the list
           return {
             name: grpName,
             values: data.map(function(d) {
@@ -50,6 +67,7 @@ d3.csv("https://smartrestartch.s3.eu-central-1.amazonaws.com/data.csv", function
 
     // List of groups (here I have one group per column)
     var allGroupOpt = ["Dunkelziffer_Opt"];
+    var secondGroupOpt = ["Geimpfte_Opt"];
 
     // Reformat the data: we need an array of arrays of {x, y} tuples
     var dataReadyOpt = allGroupOpt.map( function(grpName) { // .map allows to do something for each element of the list
@@ -60,9 +78,18 @@ d3.csv("https://smartrestartch.s3.eu-central-1.amazonaws.com/data.csv", function
         })
       };
     });
+    var dataReady2Opt = secondGroupOpt.map( function(grpName) { // .map allows to do something for each element of the list
+      return {
+        name: grpName,
+        values: data.map(function(d) {
+          return {time: d.Datum, value: +d[grpName]};
+        })
+      };
+    });
 
 // List of groups (here I have one group per column)
 var allGroupPess = ["Dunkelziffer_Pess"];
+var secondGroupPess = ["Geimpfte_Pess"];
 
 // Reformat the data: we need an array of arrays of {x, y} tuples
 var dataReadyPess = allGroupPess.map( function(grpName) { // .map allows to do something for each element of the list
@@ -72,6 +99,14 @@ var dataReadyPess = allGroupPess.map( function(grpName) { // .map allows to do s
       return {time: d.Datum, value: +d[grpName]};
     })
   };
+});
+var dataReady2Pess = secondGroupPess.map( function(grpName) { // .map allows to do something for each element of the list
+return {
+name: grpName,
+values: data.map(function(d) {
+  return {time: d.Datum, value: +d[grpName]};
+})
+};
 });
 
     // A color scale: one color for each group
@@ -108,6 +143,22 @@ var dataReadyPess = allGroupPess.map( function(grpName) { // .map allows to do s
 
 
 
+
+
+
+      var calc_zmax= d3.format(".1f")(d3.max(data, function(d) { return +d.Geimpfte; }));
+      var z = d3.scaleLinear()
+        .domain( [0,calc_zmax])
+        .range([ height, 0 ]);
+        document.getElementById("ryachse3").value=calc_zmax;
+        var z_axis = d3.axisRight(z);
+      svg.append("g")
+      .attr("class", "zaxis3")
+      .attr("transform", "translate( " + width + ", 0 )")
+        .call(z_axis);
+
+
+
 var calc_ymax= d3.format(".1f")(d3.max(data, function(d) { return +(d.Dunkelziffer); }));
       	y.domain([0,calc_ymax]);
         document.getElementById("lyachse3").value=calc_ymax;
@@ -133,6 +184,8 @@ var calc_ymax= d3.format(".1f")(d3.max(data, function(d) { return +(d.Dunkelziff
        switch(welches) {
          case "lyachse":  console.log("lyachse"); y.domain([0,inputWert]);
          d3.select(".yaxis3").transition().duration(1000).call(d3.axisLeft(y)); break;
+         case "ryachse":  z.domain([0,inputWert]);
+         d3.select(".zaxis3").transition().duration(1000).call(d3.axisRight(z)); break;
          case "xachsestart":
          d3.select(".xaxis3").transition().duration(1000).call(d3.axisBottom(x).tickFormat(d3.timeFormat(xFormat)).ticks(d3.timeFormat.month, 2)); break;
          case "xachseende":
@@ -221,7 +274,46 @@ var calc_ymax= d3.format(".1f")(d3.max(data, function(d) { return +(d.Dunkelziff
         .style("stroke-width", 2)
         .style("fill", "none")
 
+        var line2 = d3.line()
+          .x(function(d) { return x(parseTime(d.time)); })
+          .y(function(d) { return z(+d.value) })
 
+          var u = svg.selectAll(".myLines2")
+      .data(dataReady2);
+
+          u
+            .enter()
+            .append("path").attr('clip-path', 'url(#clip)')
+            .attr("class", function(d){ return "myLines2 "+d.name })
+            .merge(u)
+       .transition()
+       .duration(1000)
+            .attr("d", function(d){ return line2(d.values) } )
+            .attr("stroke", function(d){ return myColor(d.name) })
+            .style("stroke-width", 2)
+            .style("fill", "none")
+
+        var movLine2 = d3.line()
+            .x(function(d) { return x(parseTime(d.time)); })
+            .y(function(d) { return z(+d.value) })
+            //.interpolate(movingAvg(7))
+            var u = svg.selectAll(".movMyLines2")
+        .data(dataReady2);
+
+            u
+              .enter()
+              .append("path").attr('clip-path', 'url(#clip)')
+              .attr("class", function(d){ return "movMyLines2 "+d.name })
+              .merge(u)
+         .transition()
+         .duration(1000)
+
+            .attr("d", line2.curve(curveNMoveAge.N(7)))
+            .attr("d", function(d){ return line2(d.values) } )
+            .attr("stroke", function(d){ return myColor(d.name) })
+            .style("stroke-dasharray", ("3, 3"))
+            .style("stroke-width", 2)
+            .style("fill", "none")
 
 //Jetzt für Plus-Szeario
             var linePlus = d3.line()
@@ -272,6 +364,57 @@ var calc_ymax= d3.format(".1f")(d3.max(data, function(d) { return +(d.Dunkelziff
                 .style("stroke-width", 2)
                 .style("fill", "none")
                 .style('opacity', function(d) {currentOpacity = d3.selectAll("." + d.name).style("opacity");if (welches == "start") {return 0.0} else{return currentOpacity};})
+
+                var line2Plus = d3.line()
+                  .x(function(d) { return x(parseTime(d.time)); })
+                  .y(function(d) { return z(+d.value) })
+
+                  var u = svg.selectAll(".myLines2Plus")
+              .data(dataReady2Plus);
+
+                  u
+                    .enter()
+                    .append("path").attr('clip-path', 'url(#clip)')
+                    .attr("class", function(d){ return "myLines2Plus "+d.name })
+                    .merge(u)
+               .transition()
+               .duration(1000)
+
+
+                  //.append("path").attr('clip-path', 'url(#clip)')
+                    //.attr("class", function(d){ return d.name })
+                    .attr("d", function(d){ return line2Plus(d.values) } )
+                    .attr("stroke", function(d){ return myColor(d.name) })
+                    .style("stroke-width", 2)
+                    .style("fill", "none")
+                    .style('opacity', function(d) {currentOpacity = d3.selectAll("." + d.name).style("opacity");if (welches == "start") {return 0.0} else{return currentOpacity};})
+
+
+                var movLine2Plus = d3.line()
+                    .x(function(d) { return x(parseTime(d.time)); })
+                    .y(function(d) { return z(+d.value) })
+                    //.interpolate(movingAvg(7))
+
+                    var u = svg.selectAll(".movMyLines2Plus")
+                .data(dataReady2Plus);
+
+                    u
+                      .enter()
+                      .append("path").attr('clip-path', 'url(#clip)')
+                      .attr("class", function(d){ return "movMyLines2Plus "+d.name })
+                      .merge(u)
+                 .transition()
+                 .duration(1000)
+
+                    //.append("path").attr('clip-path', 'url(#clip)')
+                    .attr("d", line2Plus.curve(curveNMoveAge.N(7)))
+                    //.attr("class", function(d){ return d.name })
+                    .attr("d", function(d){ return line2Plus(d.values) } )
+                    .attr("stroke", function(d){ return myColor(d.name) })
+                    .style("stroke-dasharray", ("3, 3"))
+                    .style("stroke-width", 2)
+                    .style("fill", "none")
+                    .style('opacity', function(d) {currentOpacity = d3.selectAll("." + d.name).style("opacity");if (welches == "start") {return 0.0} else{return currentOpacity};})
 
 
   //Jetzt für Opt-Szeario
@@ -325,6 +468,57 @@ var calc_ymax= d3.format(".1f")(d3.max(data, function(d) { return +(d.Dunkelziff
                   .style('opacity', function(d) {currentOpacity = d3.selectAll("." + d.name).style("opacity");if (welches == "start") {return 0.0} else{return currentOpacity};})
 
 
+                                    var line2Opt = d3.line()
+                                      .x(function(d) { return x(parseTime(d.time)); })
+                                      .y(function(d) { return z(+d.value) })
+
+                                      var u = svg.selectAll(".myLines2Opt")
+                                  .data(dataReady2Opt);
+
+                                      u
+                                        .enter()
+                                        .append("path").attr('clip-path', 'url(#clip)')
+                                        .attr("class", function(d){ return "myLines2Opt "+d.name })
+                                        .merge(u)
+                                   .transition()
+                                   .duration(1000)
+
+
+                                      //.append("path").attr('clip-path', 'url(#clip)')
+                                        //.attr("class", function(d){ return d.name })
+                                        .attr("d", function(d){ return line2Opt(d.values) } )
+                                        .attr("stroke", function(d){ return myColor(d.name) })
+                                        .style("stroke-width", 2)
+                                        .style("fill", "none")
+                                        .style('opacity', function(d) {currentOpacity = d3.selectAll("." + d.name).style("opacity");if (welches == "start") {return 0.0} else{return currentOpacity};})
+
+
+                                    var movLine2Opt = d3.line()
+                                        .x(function(d) { return x(parseTime(d.time)); })
+                                        .y(function(d) { return z(+d.value) })
+                                        //.interpolate(movingAvg(7))
+
+                                        var u = svg.selectAll(".movMyLines2Opt")
+                                    .data(dataReady2Opt);
+
+                                        u
+                                          .enter()
+                                          .append("path").attr('clip-path', 'url(#clip)')
+                                          .attr("class", function(d){ return "movMyLines2Opt "+d.name })
+                                          .merge(u)
+                                     .transition()
+                                     .duration(1000)
+
+                                        //.append("path").attr('clip-path', 'url(#clip)')
+                                        .attr("d", line2Opt.curve(curveNMoveAge.N(7)))
+                                        //.attr("class", function(d){ return d.name })
+                                        .attr("d", function(d){ return line2Opt(d.values) } )
+                                        .attr("stroke", function(d){ return myColor(d.name) })
+                                        .style("stroke-dasharray", ("3, 3"))
+                                        .style("stroke-width", 2)
+                                        .style("fill", "none")
+                                        .style('opacity', function(d) {currentOpacity = d3.selectAll("." + d.name).style("opacity");if (welches == "start") {return 0.0} else{return currentOpacity};})
+
 //Jetzt für Pess-Szeario
             var linePess = d3.line()
               .x(function(d) { return x(parseTime(d.time)); })
@@ -375,6 +569,57 @@ var calc_ymax= d3.format(".1f")(d3.max(data, function(d) { return +(d.Dunkelziff
                 .style("fill", "none")
                 .style('opacity', function(d) {currentOpacity = d3.selectAll("." + d.name).style("opacity");if (welches == "start") {return 0.0} else{return currentOpacity};})
 
+
+                                var line2Pess = d3.line()
+                                  .x(function(d) { return x(parseTime(d.time)); })
+                                  .y(function(d) { return z(+d.value) })
+
+                                  var u = svg.selectAll(".myLines2Pess")
+                              .data(dataReady2Pess);
+
+                                  u
+                                    .enter()
+                                    .append("path").attr('clip-path', 'url(#clip)')
+                                    .attr("class", function(d){ return "myLines2Pess "+d.name })
+                                    .merge(u)
+                               .transition()
+                               .duration(1000)
+
+
+                                  //.append("path").attr('clip-path', 'url(#clip)')
+                                    //.attr("class", function(d){ return d.name })
+                                    .attr("d", function(d){ return line2Pess(d.values) } )
+                                    .attr("stroke", function(d){ return myColor(d.name) })
+                                    .style("stroke-width", 2)
+                                    .style("fill", "none")
+                                    .style('opacity', function(d) {currentOpacity = d3.selectAll("." + d.name).style("opacity");if (welches == "start") {return 0.0} else{return currentOpacity};})
+
+
+                                var movLine2Pess = d3.line()
+                                    .x(function(d) { return x(parseTime(d.time)); })
+                                    .y(function(d) { return z(+d.value) })
+                                    //.interpolate(movingAvg(7))
+
+                                    var u = svg.selectAll(".movMyLines2Pess")
+                                .data(dataReady2Pess);
+
+                                    u
+                                      .enter()
+                                      .append("path").attr('clip-path', 'url(#clip)')
+                                      .attr("class", function(d){ return "movMyLines2Pess "+d.name })
+                                      .merge(u)
+                                 .transition()
+                                 .duration(1000)
+
+                                    //.append("path").attr('clip-path', 'url(#clip)')
+                                    .attr("d", line2Pess.curve(curveNMoveAge.N(7)))
+                                    //.attr("class", function(d){ return d.name })
+                                    .attr("d", function(d){ return line2Pess(d.values) } )
+                                    .attr("stroke", function(d){ return myColor(d.name) })
+                                    .style("stroke-dasharray", ("3, 3"))
+                                    .style("stroke-width", 2)
+                                    .style("fill", "none")
+                                    .style('opacity', function(d) {currentOpacity = d3.selectAll("." + d.name).style("opacity");if (welches == "start") {return 0.0} else{return currentOpacity};})
 
 /*
     // Add a label at the end of each line
@@ -571,7 +816,26 @@ u
           d3.selectAll("." + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
           d3.select(this).text(currentOpacity == 1 ? "\uf0c8 "+ d.name + " (Linke y-Achse)":"\uf14a "+ d.name + " (Linke y-Achse)");
         })
-
+        svg
+          .selectAll("myLegend2")
+          .data(dataReady2)
+          .enter()
+            .append('g')
+            .append("text")
+              .attr('y', height+50)
+              .attr('x', 600)
+              .text(function(d) { return "\uf14a"+ d.name + " (Rechte y-Achse)"; })
+              .attr("class", "fa")
+              .attr("class","fas fa-adjust")
+              .style("fill", function(d){ return myColor(d.name) })
+              .style("font-size", 15)
+            .on("click", function(d){
+              // is the element currently visible ?
+              currentOpacity = d3.selectAll("." + d.name).style("opacity")
+              // Change the opacity: from 0 to 1 or from 1 to 0
+              d3.selectAll("." + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+              d3.select(this).text(currentOpacity == 1 ? "\uf0c8 "+ d.name + " (Rechte y-Achse)":"\uf14a "+ d.name + " (Rechte y-Achse)");
+            })
         svg
           .selectAll("myLegendPlus")
           .data(dataReadyPlus)
@@ -595,7 +859,26 @@ u
               d3.selectAll("." + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
               d3.select(this).text(currentOpacity == 1 ? "\uf0c8 "+ d.name + " (Linke y-Achse)":"\uf14a "+ d.name + " (Linke y-Achse)");
             })
-
+            svg
+              .selectAll("myLegend2Plus")
+              .data(dataReady2Plus)
+              .enter()
+                .append('g')
+                .append("text")
+                  .attr('y', height+50+20)
+                  .attr('x', 600)
+                  .text(function(d) { return "\uf0c8"+ d.name + " (Rechte y-Achse)"; })
+                  .attr("class", "fa")
+                  .attr("class","fas fa-adjust")
+                  .style("fill", function(d){ return myColor(d.name) })
+                  .style("font-size", 15)
+                .on("click", function(d){
+                  // is the element currently visible ?
+                  currentOpacity = d3.selectAll("." + d.name).style("opacity")
+                  // Change the opacity: from 0 to 1 or from 1 to 0
+                  d3.selectAll("." + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                  d3.select(this).text(currentOpacity == 1 ? "\uf0c8 "+ d.name + " (Rechte y-Achse)":"\uf14a "+ d.name + " (Rechte y-Achse)");
+                })
             svg
               .selectAll("myLegendOpt")
               .data(dataReadyOpt)
@@ -619,7 +902,26 @@ u
                   d3.selectAll("." + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
                   d3.select(this).text(currentOpacity == 1 ? "\uf0c8 "+ d.name + " (Linke y-Achse)":"\uf14a "+ d.name + " (Linke y-Achse)");
                 })
-
+                svg
+                  .selectAll("myLegend2Opt")
+                  .data(dataReady2Opt)
+                  .enter()
+                    .append('g')
+                    .append("text")
+                      .attr('y', height+50+40)
+                      .attr('x', 600)
+                      .text(function(d) { return "\uf0c8"+ d.name + " (Rechte y-Achse)"; })
+                      .attr("class", "fa")
+                      .attr("class","fas fa-adjust")
+                      .style("fill", function(d){ return myColor(d.name) })
+                      .style("font-size", 15)
+                    .on("click", function(d){
+                      // is the element currently visible ?
+                      currentOpacity = d3.selectAll("." + d.name).style("opacity")
+                      // Change the opacity: from 0 to 1 or from 1 to 0
+                      d3.selectAll("." + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                      d3.select(this).text(currentOpacity == 1 ? "\uf0c8 "+ d.name + " (Rechte y-Achse)":"\uf14a "+ d.name + " (Rechte y-Achse)");
+                    })
                 svg
                   .selectAll("myLegendPess")
                   .data(dataReadyPess)
@@ -643,7 +945,26 @@ u
                       d3.selectAll("." + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
                       d3.select(this).text(currentOpacity == 1 ? "\uf0c8 "+ d.name + " (Linke y-Achse)":"\uf14a "+ d.name + " (Linke y-Achse)");
                     })
-
+                    svg
+                      .selectAll("myLegend2Pess")
+                      .data(dataReady2Pess)
+                      .enter()
+                        .append('g')
+                        .append("text")
+                          .attr('y', height+50+60)
+                          .attr('x', 600)
+                          .text(function(d) { return "\uf0c8"+ d.name + " (Rechte y-Achse)"; })
+                          .attr("class", "fa")
+                          .attr("class","fas fa-adjust")
+                          .style("fill", function(d){ return myColor(d.name) })
+                          .style("font-size", 15)
+                        .on("click", function(d){
+                          // is the element currently visible ?
+                          currentOpacity = d3.selectAll("." + d.name).style("opacity")
+                          // Change the opacity: from 0 to 1 or from 1 to 0
+                          d3.selectAll("." + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                          d3.select(this).text(currentOpacity == 1 ? "\uf0c8 "+ d.name + " (Rechte y-Achse)":"\uf14a "+ d.name + " (Rechte y-Achse)");
+                        })
 
     svg
     .selectAll("LegendTitle").data(dataReady).enter().append('g').append("text")
@@ -680,7 +1001,9 @@ u
 d3.select("#lyachse3").on("input", function() {
   update3(+this.value,"lyachse");
 });
-
+d3.select("#ryachse3").on("input", function() {
+  update3(+this.value,"ryachse");
+});
 d3.select("#xachsestart3").on("input", function() {
   update3(+this.value,"xachsestart");
 });
