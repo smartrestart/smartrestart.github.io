@@ -780,7 +780,7 @@ u
     .transition()
     .duration(1000)
       .attr('y', 30)
-      .attr('x', x(parseTime(lastupdatestring))+5)
+      .attr('x', x(parseTime(lastupdatestring))-142)
       .text('Last Update: '+ lastupdatestring)
       .style("fill", "black")
 
