@@ -15,11 +15,11 @@ var svg = d3.select("#my_dataviz3")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
-d3.csv("https://smartrestart-2.glitch.me/assets/lastupdate.csv", function(data) {
+d3.csv("https://smartrestart-3.glitch.me/assets/lastupdate.csv", function(data) {
   lastupdatestring=data[0]['lastupdate'];
 });
 //Read the data
-d3.csv("https://smartrestart-2.glitch.me/assets/data.csv", function(data) {
+d3.csv("https://smartrestart-3.glitch.me/assets/data.csv", function(data) {
     // List of groups (here I have one group per column)
     var allGroup = ["Dunkelziffer"];
     var secondGroup = ["Geimpfte"];
